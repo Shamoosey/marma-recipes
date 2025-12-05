@@ -19,7 +19,11 @@ export function ParagraphLink({ children }: { children: any }) {
             </a>
           );
         }
-        return <span key={index}>{part}</span>;
+        return (
+          <span key={index} className="whitespace-pre-line">
+            {part}
+          </span>
+        );
       })}
     </>
   );
