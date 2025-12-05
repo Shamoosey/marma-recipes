@@ -39,15 +39,15 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
   };
 
   return (
-    <section className="my-4 py-4 flex flex-col">
+    <section className="my-4 py-4 flex flex-col px-2 sm:px-0">
       <span className="text-2xl">{formMode == "create" ? "Create" : "Edit"} Recipe</span>
       <form id="form">
-        <div className="flex flex-col py-4 gap-4 xl:flex-row">
+        <div className="flex flex-col py-4 gap-4 lg:flex-row">
           <div className="flex flex-col gap-2 flex-grow">
             <div className="flex flex-col">
               <span>Recipe Name</span>
               <Input placeholder="Recipe Name" name="recipeName" value={recipeData.name} onChange={(e) => handleFormChange("name", e.target.value)} />
-              {errors.has("name") && <span className="text-red-500 font-semibold">{errors.get("name")}</span>}
+              {errors.has("name") && <span className="text-red-500 font-semibold text-sm">{errors.get("name")}</span>}
             </div>
             <div className="flex flex-col">
               <span>Recipe Description</span>
@@ -55,11 +55,11 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                 placeholder="Description"
                 name="recipeDescription"
                 resizeable={true}
-                className="h-50"
+                className="h-50 min-h-[100px]"
                 value={recipeData.description}
                 onChange={(e) => handleFormChange("description", e.target.value)}
               />
-              {errors.has("description") && <span className="text-red-500 font-semibold">{errors.get("description")}</span>}
+              {errors.has("description") && <span className="text-red-500 font-semibold text-sm">{errors.get("description")}</span>}
             </div>
             <div className="flex flex-col">
               <span>Recipe Type</span>
@@ -71,9 +71,9 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   </option>
                 ))}
               </Select>
-              {errors.has("recipeTypeId") && <span className="text-red-500 font-semibold">{errors.get("recipeTypeId")}</span>}
+              {errors.has("recipeTypeId") && <span className="text-red-500 font-semibold text-sm">{errors.get("recipeTypeId")}</span>}
             </div>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex flex-col flex-grow">
                 <span>Total Servings</span>
                 <Input
@@ -83,7 +83,7 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   value={recipeData.servings ?? ""}
                   onChange={(e) => handleFormChange("servings", Number.parseInt(e.target.value))}
                 />
-                {errors.has("servings") && <span className="text-red-500 font-semibold">{errors.get("servings")}</span>}
+                {errors.has("servings") && <span className="text-red-500 font-semibold text-sm">{errors.get("servings")}</span>}
               </div>
               <div className="flex flex-col flex-grow">
                 <span>Oven Temp (F)</span>
@@ -94,10 +94,10 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   value={recipeData.ovenTemp ?? ""}
                   onChange={(e) => handleFormChange("ovenTemp", Number.parseInt(e.target.value))}
                 />
-                {errors.has("ovenTemp") && <span className="text-red-500 font-semibold">{errors.get("ovenTemp")}</span>}
+                {errors.has("ovenTemp") && <span className="text-red-500 font-semibold text-sm">{errors.get("ovenTemp")}</span>}
               </div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex flex-col flex-grow">
                 <span>Prep Time (Mins)</span>
                 <Input
@@ -107,7 +107,7 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   value={recipeData.prepTime ?? ""}
                   onChange={(e) => handleFormChange("prepTime", Number.parseInt(e.target.value))}
                 />
-                {errors.has("prepTime") && <span className="text-red-500 font-semibold">{errors.get("prepTime")}</span>}
+                {errors.has("prepTime") && <span className="text-red-500 font-semibold text-sm">{errors.get("prepTime")}</span>}
               </div>
               <div className="flex flex-col flex-grow">
                 <span>Cook Time (Mins)</span>
@@ -118,18 +118,23 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   value={recipeData.cookTime ?? ""}
                   onChange={(e) => handleFormChange("cookTime", Number.parseInt(e.target.value))}
                 />
-                {errors.has("cookTime") && <span className="text-red-500 font-semibold">{errors.get("cookTime")}</span>}
+                {errors.has("cookTime") && <span className="text-red-500 font-semibold text-sm">{errors.get("cookTime")}</span>}
               </div>
             </div>
           </div>
           <IngredientsForm ingredients={ingredients} setIngredients={setIngredients} error={errors.get("ingredients")} />
           <RecipeStepsForm steps={steps} setSteps={setSteps} error={errors.get("steps")} />
         </div>
-        <div className="flex justify-start gap-4 mt-2">
-          <Button type="button" onClick={() => onSubmit()} disabled={errors.values.length > 0} variant="green" className="bg-emerald-600 text-stone-100 w-50">
+        <div className="flex flex-col sm:flex-row justify-start gap-4 mt-2">
+          <Button
+            type="button"
+            onClick={() => onSubmit()}
+            disabled={errors.values.length > 0}
+            variant="green"
+            className="bg-emerald-600 text-stone-100 w-full sm:w-50">
             {formMode == "create" ? "Create" : "Update"}
           </Button>
-          <Button type="button" onClick={() => onReset()} variant="red" className="bg-red-600 text-stone-100 w-50">
+          <Button type="button" onClick={() => onReset()} variant="red" className="bg-red-600 text-stone-100 w-full sm:w-50">
             Reset
           </Button>
         </div>

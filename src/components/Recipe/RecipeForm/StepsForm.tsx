@@ -41,21 +41,22 @@ export function RecipeStepsForm({ setSteps, steps, error }: RecipeStepsFormProps
   const buttonDisabled = newStep.trim() == "";
 
   return (
-    <section className="flex flex-col w-100">
-      <span>Recipe Steps</span>
+    <section className="flex flex-col w-full lg:w-100 lg:flex-1">
+      <span className="mb-1">Recipe Steps</span>
       <div className="flex flex-col gap-1 mb-4">
         <Textarea
           placeholder="Add steps"
           name="recipeIngredients"
           value={newStep}
           resizeable={true}
+          className="min-h-[80px]"
           onKeyDown={(e) => onKeyDown(e)}
           onChange={(e) => setNewStep(e.target.value)}
         />
-        <Button className="text-stone-100 mt-2" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddStep()}>
+        <Button className="text-stone-100 mt-2 w-full sm:w-auto" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddStep()}>
           Add Steps
         </Button>
-        {error && <span className="text-red-500 font-semibold">{error}</span>}
+        {error && <span className="text-red-500 font-semibold text-sm mt-1">{error}</span>}
       </div>
       <RemovableFormList data={steps} numbered={true} onTrashClick={onRemoveStep} onReorder={setSteps} />
     </section>

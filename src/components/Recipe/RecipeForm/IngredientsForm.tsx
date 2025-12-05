@@ -41,22 +41,23 @@ export function IngredientsForm({ ingredients, setIngredients, error }: Ingredie
   const buttonDisabled = newIngredient.trim() == "";
 
   return (
-    <section className="flex flex-col w-100">
-      <span>Ingredients</span>
+    <section className="flex flex-col w-full lg:w-100 lg:flex-1">
+      <span className="mb-1">Ingredients</span>
 
       <div className="flex flex-col gap-1 mb-4">
         <Textarea
           placeholder="Add ingredients"
           name="recipeIngredients"
           resizeable={true}
+          className="min-h-[80px]"
           value={newIngredient}
           onKeyDown={(e) => onKeyDown(e)}
           onChange={(e) => setNewIngredient(e.target.value)}
         />
-        <Button className="text-stone-100 mt-2" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddIngredient()}>
+        <Button className="text-stone-100 mt-2 w-full sm:w-auto" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddIngredient()}>
           Add Ingredients
         </Button>
-        {error && <span className="text-red-500 font-semibold">{error}</span>}
+        {error && <span className="text-red-500 font-semibold text-sm mt-1">{error}</span>}
       </div>
       <RemovableFormList data={ingredients} onTrashClick={onRemoveIngredient} onReorder={setIngredients} />
     </section>
