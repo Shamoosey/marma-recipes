@@ -43,7 +43,7 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
       <span className="text-2xl">{formMode == "create" ? "Create" : "Edit"} Recipe</span>
       <form id="form">
         <div className="flex flex-col py-4 gap-4 lg:flex-row">
-          <div className="flex flex-col gap-2 flex-grow">
+          <div className="flex flex-col gap-2 flex-grow lg:max-w-md">
             <div className="flex flex-col">
               <span>Recipe Name</span>
               <Input placeholder="Recipe Name" name="recipeName" value={recipeData.name} onChange={(e) => handleFormChange("name", e.target.value)} />
