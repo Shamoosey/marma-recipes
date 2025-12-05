@@ -15,7 +15,7 @@ export interface RecipeCommentsProps {
 export function RecipeComments({ recipeId, comments, onRecipeComment, onDeleteComment }: RecipeCommentsProps) {
   const [commentText, setCommmentText] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const { isSignedIn, user } = useUser();
+  const { user } = useUser();
 
   const onCreateComment = async () => {
     if (commentText && commentText.trim() != "") {
@@ -34,9 +34,7 @@ export function RecipeComments({ recipeId, comments, onRecipeComment, onDeleteCo
       {comments.length > 0 ? (
         <div>
           {comments.map((x) => (
-            <div
-              className="mb-2 px-2"
-              key={x.id}>
+            <div className="mb-2 px-2" key={x.id}>
               <div className="flex">
                 <span>{x.username} - </span>
                 <span className="text-sm flex items-center">
@@ -58,28 +56,13 @@ export function RecipeComments({ recipeId, comments, onRecipeComment, onDeleteCo
       ) : (
         <span>No comments yet</span>
       )}
-      {isSignedIn ? (
-        <>
-          <div className="flex gap-2 pt-2">
-            <Input
-              placeholder="Type your comment"
-              className="flex-grow"
-              required
-              value={commentText}
-              onChange={(x) => setCommmentText(x.target.value)}
-            />
-            <Button
-              variant="green"
-              onClick={() => onCreateComment()}
-              className="px-4">
-              Comment
-            </Button>
-          </div>
-          {error != null && <span className="text-red-500 font-semibold">{error}</span>}
-        </>
-      ) : (
-        <></>
-      )}
+      <div className="flex gap-2 pt-2">
+        <Input placeholder="Type your comment" className="flex-grow" required value={commentText} onChange={(x) => setCommmentText(x.target.value)} />
+        <Button variant="green" onClick={() => onCreateComment()} className="px-4">
+          Comment
+        </Button>
+      </div>
+      {error != null && <span className="text-red-500 font-semibold">{error}</span>}
     </div>
   );
 }

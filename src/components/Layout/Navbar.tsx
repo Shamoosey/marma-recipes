@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { SignedIn, SignedOut, SignInButton, useAuth, UserButton } from "@clerk/clerk-react";
+import { SignedIn, useAuth, UserButton } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/Button";
 
 export function Navbar() {
@@ -14,11 +14,11 @@ export function Navbar() {
           </Link>
         </div>
         <div className="links flex flex-row gap-4 justify-around items-center">
-          <Link to="/recipes">
-            <Button>All Recipes</Button>
-          </Link>
           {isSignedIn ? (
             <>
+              <Link to="/recipes">
+                <Button>All Recipes</Button>
+              </Link>
               <Link to="/recipes/saved-recipes">
                 <Button>Saved Recipes</Button>
               </Link>
@@ -32,11 +32,6 @@ export function Navbar() {
           ) : (
             <></>
           )}
-          <SignedOut>
-            <SignInButton>
-              <Button>Sign In</Button>
-            </SignInButton>
-          </SignedOut>
           <SignedIn>
             <UserButton />
           </SignedIn>

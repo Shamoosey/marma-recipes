@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useUser } from "@clerk/clerk-react";
 import { IngredientsForm } from "./IngredientsForm";
 import { RecipeStepsForm } from "./StepsForm";
 import { useRecipes } from "@/hooks/useRecipes";
@@ -17,13 +16,8 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
   const { recipes } = useRecipes([]);
   const { ingredients, recipeData, steps, errors, onReset, handleFormChange, setIngredients, setSteps, setRecipeData, onSubmitForm } = useRecipeForm();
   const { recipeTypes } = useRecipeTypes([]);
+  const navigate = useNavigate();
 
-  let navigate = useNavigate();
-  const { user } = useUser();
-
-  if (!user) {
-    navigate("/not-found");
-  }
   useEffect(() => {
     //When the formMode is "edit" and a recipeId is passed in, find the associated recipe and use that to fill the form fields for an update
     if (formMode == "edit" && recipeId) {
@@ -47,19 +41,12 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
   return (
     <section className="my-4 py-4 flex flex-col">
       <span className="text-2xl">{formMode == "create" ? "Create" : "Edit"} Recipe</span>
-      <form
-        id="form"
-        className="">
+      <form id="form" className="">
         <div className="flex flex-col py-4 gap-4 xl:flex-row">
           <div className="flex flex-col gap-2 flex-grow">
             <div className="flex flex-col">
               <span>Recipe Name</span>
-              <Input
-                placeholder="Recipe Name"
-                name="recipeName"
-                value={recipeData.name}
-                onChange={(e) => handleFormChange("name", e.target.value)}
-              />
+              <Input placeholder="Recipe Name" name="recipeName" value={recipeData.name} onChange={(e) => handleFormChange("name", e.target.value)} />
               {errors.has("name") && <span className="text-red-500 font-semibold">{errors.get("name")}</span>}
             </div>
             <div className="flex flex-col">
@@ -74,17 +61,10 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
             </div>
             <div className="flex flex-col">
               <span>Recipe Type</span>
-              <Select
-                name="recipeTypeId"
-                value={recipeData.recipeTypeId}
-                onChange={(e) => handleFormChange("recipeTypeId", e.target.value)}>
-                <option
-                  disabled
-                  selected></option>
+              <Select name="recipeTypeId" value={recipeData.recipeTypeId} onChange={(e) => handleFormChange("recipeTypeId", e.target.value)}>
+                <option disabled selected></option>
                 {recipeTypes.map((x) => (
-                  <option
-                    key={x.id}
-                    value={x.id}>
+                  <option key={x.id} value={x.id}>
                     {x.name}
                   </option>
                 ))}
@@ -140,31 +120,14 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
               </div>
             </div>
           </div>
-          <IngredientsForm
-            ingredients={ingredients}
-            setIngredients={setIngredients}
-            error={errors.get("ingredients")}
-          />
-          <RecipeStepsForm
-            steps={steps}
-            setSteps={setSteps}
-            error={errors.get("steps")}
-          />
+          <IngredientsForm ingredients={ingredients} setIngredients={setIngredients} error={errors.get("ingredients")} />
+          <RecipeStepsForm steps={steps} setSteps={setSteps} error={errors.get("steps")} />
         </div>
         <div className="flex justify-start gap-4 mt-2">
-          <Button
-            type="button"
-            onClick={() => onSubmit()}
-            disabled={errors.values.length > 0}
-            variant="green"
-            className="bg-emerald-600 text-stone-100 w-50">
+          <Button type="button" onClick={() => onSubmit()} disabled={errors.values.length > 0} variant="green" className="bg-emerald-600 text-stone-100 w-50">
             {formMode == "create" ? "Create" : "Update"}
           </Button>
-          <Button
-            type="button"
-            onClick={() => onReset()}
-            variant="red"
-            className="bg-red-600 text-stone-100 w-50">
+          <Button type="button" onClick={() => onReset()} variant="red" className="bg-red-600 text-stone-100 w-50">
             Reset
           </Button>
         </div>

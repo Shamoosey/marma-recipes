@@ -18,14 +18,10 @@ export function useRecipes(dependencies: unknown[]) {
       const recipesData = await RecipeService.fetchRecipes();
       setRecipes(recipesData);
 
-      if (isSignedIn) {
-        const sessionToken = (await getToken()) ?? null;
-        if (sessionToken) {
-          const savedIds = await RecipeService.fetchUserSavedRecipes(sessionToken);
-          setUserSavedRecipeIds(savedIds);
-        }
-      } else {
-        setUserSavedRecipeIds([]);
+      const sessionToken = (await getToken()) ?? null;
+      if (sessionToken) {
+        const savedIds = await RecipeService.fetchUserSavedRecipes(sessionToken);
+        setUserSavedRecipeIds(savedIds);
       }
     } catch (errorObject) {
       setRecipesError("Unable to fetch recipes due to an unexpected error");

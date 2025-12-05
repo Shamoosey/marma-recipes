@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { ToastContainer } from "react-toastify";
 import { Layout } from "@/components/Layout/Layout";
 import { Recipes } from "@/pages/Recipe/AllRecipes";
@@ -10,47 +11,76 @@ import { UpdateRecipe } from "@/pages/Recipe/UpdateRecipe";
 import { ViewRecipe } from "@/pages/Recipe/ViewRecipe";
 import { SavedRecipes } from "@/pages/Recipe/SavedRecipes";
 
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <SignedIn>{children}</SignedIn>
+      <SignedOut>
+        <Navigate to="/" replace />
+      </SignedOut>
+    </>
+  );
+}
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={<Layout />}>
-          <Route
-            index
-            element={<Landing />}
-          />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Landing />} />
+
           <Route path="recipes">
             <Route
               index
-              element={<Recipes />}
+              element={
+                <ProtectedRoute>
+                  <Recipes />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="saved-recipes"
-              element={<SavedRecipes />}
+              element={
+                <ProtectedRoute>
+                  <SavedRecipes />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="my-recipes"
-              element={<MyRecipes />}
+              element={
+                <ProtectedRoute>
+                  <MyRecipes />
+                </ProtectedRoute>
+              }
             />
             <Route
               path=":id"
-              element={<ViewRecipe />}
+              element={
+                <ProtectedRoute>
+                  <ViewRecipe />
+                </ProtectedRoute>
+              }
             />
             <Route
               path=":id/edit"
-              element={<UpdateRecipe />}
+              element={
+                <ProtectedRoute>
+                  <UpdateRecipe />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="create"
-              element={<CreateRecipe />}
+              element={
+                <ProtectedRoute>
+                  <CreateRecipe />
+                </ProtectedRoute>
+              }
             />
           </Route>
-          <Route
-            path="*"
-            element={<NotFound />}
-          />
+
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
       <ToastContainer />
