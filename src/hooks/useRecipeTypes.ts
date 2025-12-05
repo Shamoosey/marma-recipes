@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import * as RecipeTypeService from "@/services/recipeTypeService";
 import type { RecipeType } from "@/types/RecipeType";
+import { useAuth } from "@clerk/clerk-react";
 
 export function useRecipeTypes(dependencies: unknown[]) {
   const [recipeTypes, setRecipeTypes] = useState<RecipeType[]>([]);
+  const { getToken } = useAuth();
 
   const fetchRecipeTypes = async () => {
-    const types = await RecipeTypeService.fetchRecipeTypes();
-    setRecipeTypes([...types]);
+    const sessionToken = (await getToken()) ?? null;
+    if (sessionToken) {
+      const types = await RecipeTypeService.fetchRecipeTypes(sessionToken);
+      setRecipeTypes([...types]);
+    }
   };
 
   useEffect(() => {

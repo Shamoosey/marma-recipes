@@ -1,8 +1,8 @@
 import * as recipeRepo from "@/apis/recipeRepo";
 import type { CreateUpdateRecipe } from "@/types/CreateUpdateRecipe";
 
-export async function fetchRecipes() {
-  return await recipeRepo.getRecipes();
+export async function fetchRecipes(sessionToken: string) {
+  return await recipeRepo.getRecipes(sessionToken);
 }
 
 export async function fetchUserSavedRecipes(sessionToken: string) {

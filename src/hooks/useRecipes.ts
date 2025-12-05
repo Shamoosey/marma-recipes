@@ -15,11 +15,10 @@ export function useRecipes(dependencies: unknown[]) {
     setLoadingRecipes(true);
     setRecipesError(null);
     try {
-      const recipesData = await RecipeService.fetchRecipes();
-      setRecipes(recipesData);
-
       const sessionToken = (await getToken()) ?? null;
       if (sessionToken) {
+        const recipesData = await RecipeService.fetchRecipes(sessionToken);
+        setRecipes(recipesData);
         const savedIds = await RecipeService.fetchUserSavedRecipes(sessionToken);
         setUserSavedRecipeIds(savedIds);
       }

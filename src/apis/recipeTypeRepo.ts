@@ -3,8 +3,12 @@ import type { RecipeType } from "@/types/RecipeType";
 
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
-export async function getRecipeTypes() {
-  const recipeTypesResponse: Response = await fetch(`${BASE_URL}/recipeTypes`);
+export async function getRecipeTypes(sessionToken: string) {
+  const recipeTypesResponse: Response = await fetch(`${BASE_URL}/recipeTypes`, {
+    headers: {
+      Authorization: `Bearer ${sessionToken}`,
+    },
+  });
 
   if (!recipeTypesResponse.ok) {
     throw new Error("Failed to fetch recipeTypes");
@@ -14,46 +18,46 @@ export async function getRecipeTypes() {
   return json.data;
 }
 
-export async function createRecipeType(recipeType: RecipeType) {
-  const createResponse: Response = await fetch(`${BASE_URL}/recipeTypes/${recipeType.id}`, {
-    method: "POST",
-    body: JSON.stringify({ ...recipeType }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+// export async function createRecipeType(recipeType: RecipeType) {
+//   const createResponse: Response = await fetch(`${BASE_URL}/recipeTypes/${recipeType.id}`, {
+//     method: "POST",
+//     body: JSON.stringify({ ...recipeType }),
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
 
-  if (!createResponse.ok) {
-    throw new Error(`Failed to create recipeType`);
-  }
+//   if (!createResponse.ok) {
+//     throw new Error(`Failed to create recipeType`);
+//   }
 
-  const json: BaseResponse<RecipeType> = await createResponse.json();
-  return json.data;
-}
+//   const json: BaseResponse<RecipeType> = await createResponse.json();
+//   return json.data;
+// }
 
-export async function updateRecipeTypes(recipeType: RecipeType) {
-  const updateResponse: Response = await fetch(`${BASE_URL}/recipeTypes/${recipeType.id}`, {
-    method: "PUT",
-    body: JSON.stringify({ ...recipeType }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+// export async function updateRecipeTypes(recipeType: RecipeType) {
+//   const updateResponse: Response = await fetch(`${BASE_URL}/recipeTypes/${recipeType.id}`, {
+//     method: "PUT",
+//     body: JSON.stringify({ ...recipeType }),
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
 
-  if (!updateResponse.ok) {
-    throw new Error(`Failed to update recipeType with id ${recipeType.id}`);
-  }
+//   if (!updateResponse.ok) {
+//     throw new Error(`Failed to update recipeType with id ${recipeType.id}`);
+//   }
 
-  const json: BaseResponse<RecipeType> = await updateResponse.json();
-  return json.data;
-}
+//   const json: BaseResponse<RecipeType> = await updateResponse.json();
+//   return json.data;
+// }
 
-export async function deleteRecipeType(recipeTypeId: string): Promise<void> {
-  const recipeTypeResponse: Response = await fetch(`${BASE_URL}/recipeTypes/${recipeTypeId}`, {
-    method: "DELETE",
-  });
+// export async function deleteRecipeType(recipeTypeId: string): Promise<void> {
+//   const recipeTypeResponse: Response = await fetch(`${BASE_URL}/recipeTypes/${recipeTypeId}`, {
+//     method: "DELETE",
+//   });
 
-  if (!recipeTypeResponse.ok) {
-    throw new Error(`Failed to fetch recipeType with id ${recipeTypeId}`);
-  }
-}
+//   if (!recipeTypeResponse.ok) {
+//     throw new Error(`Failed to fetch recipeType with id ${recipeTypeId}`);
+//   }
+// }
