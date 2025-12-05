@@ -45,7 +45,7 @@ export function RecipeList({
 
       {!loadingRecipes && recipesError != null && <div className="text-red-400 text-xl font-semibold mt-4">{recipesError}</div>}
 
-      {!loadingRecipes && !recipesError && recipes.length === 0 && <NoRecipesFound setRecipeType={setRecipeType} />}
+      {!loadingRecipes && !recipesError && recipes.length === 0 && <NoRecipesFound />}
 
       {!loadingRecipes &&
         !recipesError &&
