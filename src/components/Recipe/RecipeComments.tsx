@@ -32,24 +32,26 @@ export function RecipeComments({ recipeId, comments, onRecipeComment, onDeleteCo
     <div className="flex flex-col rounded border p-4 mt-2 bg-stone-200 print:hidden">
       <h1 className="text-xl mb-2">Comments</h1>
       {comments.length > 0 ? (
-        <div>
+        <div className="space-y-3">
           {comments.map((x) => (
-            <div className="mb-2 px-2" key={x.id}>
-              <div className="flex">
-                <span>{x.username} - </span>
-                <span className="text-sm flex items-center">
-                  {""}
-                  {formatDate(x.createdAt.toString(), "short")}
-                </span>
-                {user?.id == x.userId ? (
-                  <Button onClick={() => onDeleteComment(x.id)}>
-                    <Trash className="ml-2 w-4 h-4" />
-                  </Button>
-                ) : (
-                  <></>
-                )}
+            <div className="flex gap-3 px-2" key={x.id}>
+              <img
+                src={x.userProfileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(x.username)}&background=random`}
+                alt={`${x.username}'s profile`}
+                className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+              />
+              <div className="flex flex-col flex-grow min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-medium">{x.username}</span>
+                  <span className="text-sm text-gray-600">{formatDate(x.createdAt.toString(), "short")}</span>
+                  {user?.id == x.userId && (
+                    <Button variant="text" icon onClick={() => onDeleteComment(x.id)} className="ml-auto">
+                      <Trash className="w-4 h-4 text-red-600" />
+                    </Button>
+                  )}
+                </div>
+                <span className="text-sm mt-1 break-words">{x.text}</span>
               </div>
-              <span className="ml-2 text-sm">{x.text}</span>
             </div>
           ))}
         </div>

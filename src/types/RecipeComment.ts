@@ -3,5 +3,6 @@ export interface RecipeComment {
   text: string;
   username: string;
   userId: string;
+  userProfileUrl: string;
   createdAt: Date;
 }
