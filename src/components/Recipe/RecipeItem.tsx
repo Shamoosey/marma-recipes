@@ -83,7 +83,11 @@ export function RecipeItem({
         </div>
         <span className="text-sm">{formatDate(recipe.updatedAt.toString(), "medium")}</span>
         <div className="flex items-center gap-2 text-sm mt-1">
-          {recipe.user.imageUrl && <img src={recipe.user.imageUrl} alt={recipe.user.username} className="w-6 h-6 rounded-full object-cover" />}
+          <img
+            src={recipe.user.imageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(recipe.user.username)}&background=random`}
+            alt={`${recipe.user.username}'s profile`}
+            className="w-6 h-6 rounded-full object-cover"
+          />
           <span>{recipe.user.username}</span>
         </div>
         <div className="flex flex-col print:flex-row print:flex print:gap-4">
