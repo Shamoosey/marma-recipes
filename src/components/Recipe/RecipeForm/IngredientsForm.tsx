@@ -47,6 +47,7 @@ export function IngredientsForm({ ingredients, setIngredients, error }: Ingredie
         <Textarea
           placeholder="Add ingredients"
           name="recipeIngredients"
+          resizeable={true}
           value={newIngredient}
           onKeyDown={(e) => onKeyDown(e)}
           onChange={(e) => setNewIngredient(e.target.value)}

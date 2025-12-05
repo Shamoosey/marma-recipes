@@ -47,6 +47,7 @@ export function RecipeStepsForm({ setSteps, steps, error }: RecipeStepsFormProps
           placeholder="Add steps"
           name="recipeIngredients"
           value={newStep}
+          resizeable={true}
           onKeyDown={(e) => onKeyDown(e)}
           onChange={(e) => setNewStep(e.target.value)}
         />
