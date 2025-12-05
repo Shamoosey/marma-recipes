@@ -12,8 +12,14 @@ export function RecipeStepsForm({ setSteps, steps, error }: RecipeStepsFormProps
   const [newStep, setNewStep] = useState<string>("");
 
   const onAddStep = () => {
-    if (newStep.trim() != "") {
-      setSteps([...steps, newStep]);
+    const trimmed = newStep.trim();
+    if (trimmed != "") {
+      const newItems = trimmed
+        .split("\n")
+        .map((item) => item.trim())
+        .filter((item) => item !== "");
+
+      setSteps([...steps, ...newItems]);
       setNewStep("");
     }
   };
@@ -34,31 +40,22 @@ export function RecipeStepsForm({ setSteps, steps, error }: RecipeStepsFormProps
   const buttonDisabled = newStep.trim() == "";
 
   return (
-    <section className="flex flex-col min-w-100">
+    <section className="flex flex-col w-100">
       <span>Recipe Steps</span>
       <div className="flex flex-col gap-1 mb-4">
         <Textarea
-          placeholder="Add an step"
+          placeholder="Add steps"
           name="recipeIngredients"
           value={newStep}
           onKeyDown={(e) => onKeyDown(e)}
           onChange={(e) => setNewStep(e.target.value)}
         />
-        <Button
-          className="text-stone-100 mt-2"
-          type="button"
-          variant="green"
-          disabled={buttonDisabled}
-          onClick={() => onAddStep()}>
-          Add Step
+        <Button className="text-stone-100 mt-2" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddStep()}>
+          Add Steps
         </Button>
         {error && <span className="text-red-500 font-semibold">{error}</span>}
       </div>
-      <RemovableFormList
-        data={steps}
-        numbered={true}
-        onTrashClick={onRemoveStep}
-      />
+      <RemovableFormList data={steps} numbered={true} onTrashClick={onRemoveStep} onReorder={setSteps} />
     </section>
   );
 }

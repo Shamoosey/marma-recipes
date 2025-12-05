@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { RemovableFormList } from "./RemovableFormList";
-import { Button, Input } from "@/components/ui";
+import { Button, Textarea } from "@/components/ui";
 
 interface IngredientsFormProps {
   ingredients: string[];
@@ -12,8 +12,14 @@ export function IngredientsForm({ ingredients, setIngredients, error }: Ingredie
   const [newIngredient, setNewIngredient] = useState<string>("");
 
   const onAddIngredient = () => {
-    if (newIngredient.trim() != "") {
-      setIngredients([...ingredients, newIngredient]);
+    const trimmed = newIngredient.trim();
+    if (trimmed != "") {
+      const newItems = trimmed
+        .split("\n")
+        .map((item) => item.trim())
+        .filter((item) => item !== "");
+
+      setIngredients([...ingredients, ...newItems]);
       setNewIngredient("");
     }
   };
@@ -24,7 +30,7 @@ export function IngredientsForm({ ingredients, setIngredients, error }: Ingredie
     setIngredients(data);
   };
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (e: any) => {
     if (e.key.toLowerCase() == "enter") {
       e.preventDefault();
       onAddIngredient();
@@ -34,32 +40,23 @@ export function IngredientsForm({ ingredients, setIngredients, error }: Ingredie
   const buttonDisabled = newIngredient.trim() == "";
 
   return (
-    <section className="flex flex-col min-w-100">
+    <section className="flex flex-col w-100">
       <span>Ingredients</span>
 
       <div className="flex flex-col gap-1 mb-4">
-        <Input
-          type="text"
-          placeholder="Add an ingredient"
+        <Textarea
+          placeholder="Add ingredients"
           name="recipeIngredients"
           value={newIngredient}
           onKeyDown={(e) => onKeyDown(e)}
           onChange={(e) => setNewIngredient(e.target.value)}
         />
-        <Button
-          className="text-stone-100 mt-2"
-          type="button"
-          variant="green"
-          disabled={buttonDisabled}
-          onClick={() => onAddIngredient()}>
-          Add Ingredient
+        <Button className="text-stone-100 mt-2" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddIngredient()}>
+          Add Ingredients
         </Button>
         {error && <span className="text-red-500 font-semibold">{error}</span>}
       </div>
-      <RemovableFormList
-        data={ingredients}
-        onTrashClick={onRemoveIngredient}
-      />
+      <RemovableFormList data={ingredients} onTrashClick={onRemoveIngredient} onReorder={setIngredients} />
     </section>
   );
 }
