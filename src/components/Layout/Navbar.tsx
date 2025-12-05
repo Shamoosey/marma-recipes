@@ -16,7 +16,7 @@ export function Navbar() {
       <nav className="flex justify-between items-center">
         <div className="title m-w-60">
           <Link to="/">
-            <h1 className="text-4xl cursor-pointer">Recipe Tracker</h1>
+            <h1 className="text-4xl cursor-pointer">Marmalade Recipes</h1>
           </Link>
         </div>
 
