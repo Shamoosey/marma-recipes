@@ -54,7 +54,7 @@ export function IngredientsForm({ ingredients, setIngredients, error }: Ingredie
           onKeyDown={(e) => onKeyDown(e)}
           onChange={(e) => setNewIngredient(e.target.value)}
         />
-        <Button className="text-stone-100 mt-2 w-full sm:w-auto" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddIngredient()}>
+        <Button className="mt-2 w-full sm:w-auto" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddIngredient()}>
           Add Ingredients
         </Button>
         {error && <span className="text-red-500 font-semibold text-sm mt-1">{error}</span>}

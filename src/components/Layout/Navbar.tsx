@@ -28,16 +28,16 @@ export function Navbar() {
           {isSignedIn ? (
             <>
               <Link to="/recipes">
-                <Button>All Recipes</Button>
+                <Button variant="text">All Recipes</Button>
               </Link>
               <Link to="/recipes/saved-recipes">
-                <Button>Saved Recipes</Button>
+                <Button variant="text">Saved Recipes</Button>
               </Link>
               <Link to="/recipes/my-recipes">
-                <Button>My Recipes</Button>
+                <Button variant="text">My Recipes</Button>
               </Link>
               <Link to="/recipes/create">
-                <Button>Create Recipe</Button>
+                <Button variant="text">Create Recipe</Button>
               </Link>
             </>
           ) : null}

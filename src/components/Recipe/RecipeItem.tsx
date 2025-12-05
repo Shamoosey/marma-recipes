@@ -61,20 +61,22 @@ export function RecipeItem({
             {isSignedIn ? (
               recipe.user.id == user?.id ? (
                 <>
-                  <Button onClick={() => navigate(`/recipes/${recipe.id}/edit`)}>
+                  <Button icon={true} onClick={() => navigate(`/recipes/${recipe.id}/edit`)}>
                     <Edit />
                   </Button>
-                  <Button onClick={() => onRecipeDelete(recipe.id)}>
+                  <Button icon={true} onClick={() => onRecipeDelete(recipe.id)}>
                     <Trash />
                   </Button>
                 </>
               ) : (
-                <Button onClick={() => onRecipeSaved(recipe)}>{savedRecipeIds?.includes(recipe.id) ? <Star fill="orange" /> : <Star />}</Button>
+                <Button icon={true} onClick={() => onRecipeSaved(recipe)}>
+                  {savedRecipeIds?.includes(recipe.id) ? <Star fill="orange" /> : <Star />}
+                </Button>
               )
             ) : (
               <></>
             )}
-            <Button onClick={handlePrint}>
+            <Button icon={true} onClick={handlePrint}>
               <Printer />
             </Button>
           </div>

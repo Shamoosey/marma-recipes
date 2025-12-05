@@ -126,15 +126,10 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
           <RecipeStepsForm steps={steps} setSteps={setSteps} error={errors.get("steps")} />
         </div>
         <div className="flex flex-col sm:flex-row justify-start gap-4 mt-2">
-          <Button
-            type="button"
-            onClick={() => onSubmit()}
-            disabled={errors.values.length > 0}
-            variant="green"
-            className="bg-emerald-600 text-stone-100 w-full sm:w-50">
+          <Button type="button" onClick={() => onSubmit()} disabled={errors.values.length > 0} variant="green" className="w-full sm:w-50">
             {formMode == "create" ? "Create" : "Update"}
           </Button>
-          <Button type="button" onClick={() => onReset()} variant="red" className="bg-red-600 text-stone-100 w-full sm:w-50">
+          <Button type="button" onClick={() => onReset()} variant="red" className="w-full sm:w-50">
             Reset
           </Button>
         </div>

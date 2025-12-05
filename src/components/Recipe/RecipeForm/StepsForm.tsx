@@ -53,7 +53,7 @@ export function RecipeStepsForm({ setSteps, steps, error }: RecipeStepsFormProps
           onKeyDown={(e) => onKeyDown(e)}
           onChange={(e) => setNewStep(e.target.value)}
         />
-        <Button className="text-stone-100 mt-2 w-full sm:w-auto" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddStep()}>
+        <Button className="mt-2 w-full sm:w-auto" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddStep()}>
           Add Steps
         </Button>
         {error && <span className="text-red-500 font-semibold text-sm mt-1">{error}</span>}
