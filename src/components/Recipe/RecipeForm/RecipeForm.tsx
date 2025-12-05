@@ -54,6 +54,8 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
               <Textarea
                 placeholder="Description"
                 name="recipeDescription"
+                resizeable={true}
+                className="h-50"
                 value={recipeData.description}
                 onChange={(e) => handleFormChange("description", e.target.value)}
               />

@@ -17,6 +17,7 @@ export function RecipeStepsForm({ setSteps, steps, error }: RecipeStepsFormProps
       const newItems = trimmed
         .split("\n")
         .map((item) => item.trim())
+        .map((item) => item.replace(/^[*•▢◻▪▫■□●○◦⦿⦾]+\s*/, ""))
         .filter((item) => item !== "");
 
       setSteps([...steps, ...newItems]);
@@ -31,7 +32,7 @@ export function RecipeStepsForm({ setSteps, steps, error }: RecipeStepsFormProps
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key.toLowerCase() == "enter") {
+    if (e.key.toLowerCase() == "enter" && e.ctrlKey) {
       e.preventDefault();
       onAddStep();
     }

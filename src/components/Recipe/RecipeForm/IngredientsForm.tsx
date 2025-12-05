@@ -17,6 +17,7 @@ export function IngredientsForm({ ingredients, setIngredients, error }: Ingredie
       const newItems = trimmed
         .split("\n")
         .map((item) => item.trim())
+        .map((item) => item.replace(/^[*•▢◻▪▫■□●○◦⦿⦾]+\s*/, ""))
         .filter((item) => item !== "");
 
       setIngredients([...ingredients, ...newItems]);
@@ -31,7 +32,7 @@ export function IngredientsForm({ ingredients, setIngredients, error }: Ingredie
   };
 
   const onKeyDown = (e: any) => {
-    if (e.key.toLowerCase() == "enter") {
+    if (e.key.toLowerCase() == "enter" && e.ctrlKey) {
       e.preventDefault();
       onAddIngredient();
     }
