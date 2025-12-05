@@ -15,7 +15,7 @@ export function MyRecipes() {
   }
 
   return (
-    <div className="p-16">
+    <div className="lg:px-16 pt-8">
       <RecipeList
         recipes={filteredRecipes}
         recipeTypes={recipeData.recipeTypes}

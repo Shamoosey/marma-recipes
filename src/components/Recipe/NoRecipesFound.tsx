@@ -1,15 +1,19 @@
-import { Link } from "react-router";
+import { Button } from "../ui";
 
-export function NoRecipesFound() {
+interface NoRecipeFoundProps {
+  setRecipeType: (val: string) => void;
+}
+
+export function NoRecipesFound({ setRecipeType }: NoRecipeFoundProps) {
   return (
     <div className="flex flex-col text-xl gap-4 mt-8">
       <div>
         <span>No recipes found</span>
       </div>
       <div>
-        <Link to="/recipes">
+        <Button onClick={() => setRecipeType("All")}>
           <span className="text-sky-600 hover:underline">View all recipes</span>
-        </Link>
+        </Button>
       </div>
     </div>
   );

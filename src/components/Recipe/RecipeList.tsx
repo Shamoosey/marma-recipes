@@ -36,12 +36,7 @@ export function RecipeList({
 }: RecipeListProps) {
   return (
     <section className="recipe-list">
-      <RecipeListFilter
-        recipes={recipes}
-        recipeTypes={recipeTypes}
-        setRecipeType={setRecipeType}
-        setSearchTerm={setSearchTerm}
-      />
+      <RecipeListFilter recipes={recipes} recipeTypes={recipeTypes} setRecipeType={setRecipeType} setSearchTerm={setSearchTerm} />
       {loadingRecipes && (
         <div className="flex justify-around mt-16">
           <LoadingSpinner />
@@ -50,7 +45,7 @@ export function RecipeList({
 
       {!loadingRecipes && recipesError != null && <div className="text-red-400 text-xl font-semibold mt-4">{recipesError}</div>}
 
-      {!loadingRecipes && !recipesError && recipes.length === 0 && <NoRecipesFound />}
+      {!loadingRecipes && !recipesError && recipes.length === 0 && <NoRecipesFound setRecipeType={setRecipeType} />}
 
       {!loadingRecipes &&
         !recipesError &&
