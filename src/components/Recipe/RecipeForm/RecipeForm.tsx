@@ -78,7 +78,7 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   name="servings"
                   type="number"
                   placeholder="Total servings"
-                  value={recipeData.servings}
+                  value={recipeData.servings ?? ""}
                   onChange={(e) => handleFormChange("servings", Number.parseInt(e.target.value))}
                 />
                 {errors.has("servings") && <span className="text-red-500 font-semibold">{errors.get("servings")}</span>}
@@ -102,7 +102,7 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   name="prepTime"
                   type="number"
                   placeholder="Prep Time (Mins)"
-                  value={recipeData.prepTime}
+                  value={recipeData.prepTime ?? ""}
                   onChange={(e) => handleFormChange("prepTime", Number.parseInt(e.target.value))}
                 />
                 {errors.has("prepTime") && <span className="text-red-500 font-semibold">{errors.get("prepTime")}</span>}
@@ -113,7 +113,7 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   name="cookTime"
                   type="number"
                   placeholder="Cook Time (Mins)"
-                  value={recipeData.cookTime}
+                  value={recipeData.cookTime ?? ""}
                   onChange={(e) => handleFormChange("cookTime", Number.parseInt(e.target.value))}
                 />
                 {errors.has("cookTime") && <span className="text-red-500 font-semibold">{errors.get("cookTime")}</span>}

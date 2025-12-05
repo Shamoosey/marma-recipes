@@ -7,8 +7,8 @@ export interface CreateUpdateRecipe {
   ingredients: string[];
   steps: string[];
 
-  servings: number;
-  prepTime: number; // mins
-  cookTime: number; // mins
+  servings?: number;
+  prepTime?: number; // mins
+  cookTime?: number; // mins
   ovenTemp?: number;
 }

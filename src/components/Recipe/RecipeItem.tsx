@@ -39,9 +39,7 @@ export function RecipeItem({
     const text = `${recipe.name} - ${recipeTypes.find((x) => x.id == recipe.recipeTypeId)?.name ?? ""}`;
     if (!standalone) {
       return (
-        <Link
-          to={`/recipes/${recipe.id}`}
-          className="hover:underline cursor:pointer">
+        <Link to={`/recipes/${recipe.id}`} className="hover:underline cursor:pointer">
           {text}
         </Link>
       );
@@ -55,9 +53,7 @@ export function RecipeItem({
   });
 
   return (
-    <section
-      ref={printRef}
-      className="recipe-item border p-4 rounded bg-stone-100 print:border-none print:bg-white">
+    <section ref={printRef} className="recipe-item border p-4 rounded bg-stone-100 print:border-none print:bg-white">
       <div className="flex flex-col gap-2">
         <div className="flex justify-items-center mt-2 text-center justify-between">
           <div className="text-2xl">{getRecipeTitle()}</div>
@@ -86,25 +82,16 @@ export function RecipeItem({
         <span className="text-sm">{formatDate(recipe.updatedAt.toString(), "medium")}</span>
         <span className="text-sm mb-2">User: {recipe.user.username}</span>
         <div className="flex flex-col print:flex-row print:flex print:gap-4">
-          <span>Preptime: {recipe.prepTime} mins</span>
-          <span>Cooktime: {recipe.cookTime} mins</span>
+          {recipe.prepTime ? <span>Preptime: {recipe.prepTime} mins</span> : <></>}
+          {recipe.cookTime ? <span>Cooktime: {recipe.cookTime} mins</span> : <></>}
           {recipe.ovenTemp ? <span>Oven Preheat: {recipe.ovenTemp}&deg;F</span> : <></>}
-          <span>Servings: {recipe.servings}</span>
+          {recipe.servings ? <span>Servings: {recipe.servings}</span> : <></>}
         </div>
-        <div className="my-4 print:my-1">{recipe.description}</div>
+        <div className="mb-4 print:my-1">{recipe.description}</div>
 
         <div className="flex gap-4 flex-col">
-          <RecipeItemCard
-            data={recipe.ingredients}
-            title="Ingredients"
-            defaultExpand={standalone}
-          />
-          <RecipeItemCard
-            data={recipe.steps}
-            title="Steps"
-            ordered={true}
-            defaultExpand={standalone}
-          />
+          <RecipeItemCard data={recipe.ingredients} title="Ingredients" defaultExpand={standalone} />
+          <RecipeItemCard data={recipe.steps} title="Steps" ordered={true} defaultExpand={standalone} />
         </div>
         {standalone ? (
           <RecipeComments
