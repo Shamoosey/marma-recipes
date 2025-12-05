@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router";
 import type { Recipe } from "@/types/Recipe";
 import type { RecipeType } from "@/types/RecipeType";
 import { formatDate } from "@/utils/formateDate";
-import { Button } from "@/components/ui";
+import { Button, ParagraphLink } from "@/components/ui";
 import { RecipeItemCard } from "./RecipeItemCard";
 import { RecipeComments } from "./RecipeComments";
 import { useRef } from "react";
@@ -87,7 +87,9 @@ export function RecipeItem({
           {recipe.ovenTemp ? <span>Oven Preheat: {recipe.ovenTemp}&deg;F</span> : <></>}
           {recipe.servings ? <span>Servings: {recipe.servings}</span> : <></>}
         </div>
-        <div className="mb-4 print:my-1">{recipe.description}</div>
+        <div className="mb-4 print:my-1">
+          <ParagraphLink>{recipe.description}</ParagraphLink>
+        </div>
 
         <div className="flex gap-4 flex-col">
           <RecipeItemCard data={recipe.ingredients} title="Ingredients" defaultExpand={standalone} />
