@@ -1,5 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { BrowserRouter, Route, Routes } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Layout } from "@/components/Layout/Layout";
 import { Recipes } from "@/pages/Recipe/AllRecipes";
@@ -10,17 +9,8 @@ import { CreateRecipe } from "@/pages/Recipe/CreateRecipe";
 import { UpdateRecipe } from "@/pages/Recipe/UpdateRecipe";
 import { ViewRecipe } from "@/pages/Recipe/ViewRecipe";
 import { SavedRecipes } from "@/pages/Recipe/SavedRecipes";
-
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <SignedIn>{children}</SignedIn>
-      <SignedOut>
-        <Navigate to="/" replace />
-      </SignedOut>
-    </>
-  );
-}
+import { AdminPannel } from "@/pages/AdminPannel";
+import { AdminRoute, ProtectedRoute } from "@/components/util/RouteHelpers";
 
 function App() {
   return (
@@ -28,7 +18,14 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Landing />} />
-
+          <Route
+            path="admin"
+            element={
+              <AdminRoute>
+                <AdminPannel />
+              </AdminRoute>
+            }
+          />
           <Route path="recipes">
             <Route
               index
