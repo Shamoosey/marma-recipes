@@ -53,7 +53,7 @@ export function RecipeItem({
   });
 
   return (
-    <section ref={printRef} className="recipe-item border p-4 rounded bg-stone-100 print:border-none print:bg-white">
+    <section ref={printRef} className="recipe-item border p-4 rounded bg-stone-100 print:border-none print:bg-white mb-2">
       <div className="flex flex-col gap-2">
         <div className="flex justify-items-center mt-2 text-center justify-between">
           <div className="flex items-center gap-3">
@@ -91,7 +91,7 @@ export function RecipeItem({
         </div>
         <div className="flex gap-4 flex-col md:flex-row">
           <div className="flex-1 min-w-0 flex flex-col gap-2">
-            <span className="text-sm">{formatDate(recipe.updatedAt.toString(), "medium")}</span>
+            <span className="text-sm">{formatDate(recipe.createdAt.toString(), "medium")}</span>
             <div className="flex items-center gap-2 text-sm mt-1">
               <img
                 src={recipe.user.imageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(recipe.user.username)}&background=random`}
