@@ -50,28 +50,10 @@ export async function getRecipeById(recipeId: string, sessionToken: string): Pro
   return json.data;
 }
 
-const convertImageToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64String = reader.result as string;
-      resolve(base64String);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-};
-
-export async function createRecipe(recipe: CreateUpdateRecipe, sessionToken: string, imageFile?: File | null) {
-  let imageBase64: string | undefined;
-
-  if (imageFile) {
-    imageBase64 = await convertImageToBase64(imageFile);
-  }
-
+export async function createRecipe(recipe: CreateUpdateRecipe, sessionToken: string, imagePreview?: string | null) {
   const createResponse: Response = await fetch(`${BASE_URL}/recipes`, {
     method: "POST",
-    body: JSON.stringify({ ...recipe, imageBase64 }),
+    body: JSON.stringify({ ...recipe, imageBase64: imagePreview }),
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${sessionToken}`,
@@ -86,16 +68,10 @@ export async function createRecipe(recipe: CreateUpdateRecipe, sessionToken: str
   return json.data;
 }
 
-export async function updateRecipe(recipe: CreateUpdateRecipe, sessionToken: string, imageFile?: File | null) {
-  let imageBase64: string | undefined;
-
-  if (imageFile) {
-    imageBase64 = await convertImageToBase64(imageFile);
-  }
-
+export async function updateRecipe(recipe: CreateUpdateRecipe, sessionToken: string, imagePreview?: string | null) {
   const updateResponse: Response = await fetch(`${BASE_URL}/recipes/${recipe.id}`, {
     method: "PUT",
-    body: JSON.stringify({ ...recipe, imageBase64 }),
+    body: JSON.stringify({ ...recipe, imageBase64: imagePreview }),
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${sessionToken}`,

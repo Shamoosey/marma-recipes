@@ -64,7 +64,7 @@ export function useRecipeForm() {
     });
   };
 
-  const handleImageChange = (file: File | null) => {
+  const handleImageChange = async (file: File | null) => {
     if (!file) {
       setImageFile(null);
       setImagePreview(null);
@@ -72,8 +72,8 @@ export function useRecipeForm() {
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      setErrors((prev) => new Map(prev).set("image", "Image must be less than 5MB"));
+    if (file.size > 10 * 1024 * 1024) {
+      setErrors((prev) => new Map(prev).set("image", "Image must be less than 10MB"));
       return;
     }
 
@@ -85,11 +85,8 @@ export function useRecipeForm() {
     setImageFile(file);
     clearFieldError("image");
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+    const resizedBase64 = await resizeImage(file);
+    setImagePreview(resizedBase64);
   };
 
   const onReset = () => {
@@ -116,12 +113,15 @@ export function useRecipeForm() {
         steps,
       };
       if (formMode == "create") {
-        const newRecipe = await RecipeService.createNewRecipe(recipe, sessionToken, imageFile);
+        const newRecipe = await RecipeService.createNewRecipe(recipe, sessionToken, imagePreview);
         recipe.id = newRecipe.id;
         recipe.imageUrl = newRecipe.imageUrl;
         recipe.cloudinaryId = newRecipe.cloudinaryId;
       } else {
-        const updatedRecipe = await RecipeService.updateRecipe(recipe, sessionToken, imageFile);
+        if (!imagePreview) {
+          recipe.imageUrl = undefined;
+        }
+        const updatedRecipe = await RecipeService.updateRecipe(recipe, sessionToken, imagePreview);
         recipe.imageUrl = updatedRecipe.imageUrl;
         recipe.cloudinaryId = updatedRecipe.cloudinaryId;
       }
@@ -137,6 +137,46 @@ export function useRecipeForm() {
       return recipe;
     }
     return null;
+  };
+
+  const resizeImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          const maxWidth = 1200;
+          const maxHeight = 1200;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxWidth) {
+              height *= maxWidth / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width *= maxHeight / height;
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx?.drawImage(img, 0, 0, width, height);
+
+          resolve(canvas.toDataURL("image/jpeg", 0.85));
+        };
+        img.onerror = reject;
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   return {
