@@ -19,5 +19,8 @@ export interface Recipe {
   user: User;
   userId: string;
 
+  imageUrl?: string;
+  cloudinaryId?: string;
+
   comments: RecipeComment[];
 }

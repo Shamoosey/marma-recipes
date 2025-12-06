@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import { Edit, Printer, Star, Trash } from "lucide-react";
+import { Edit, MessageCircle, Printer, Star, Trash } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import type { Recipe } from "@/types/Recipe";
 import type { RecipeType } from "@/types/RecipeType";
@@ -32,7 +32,7 @@ export function RecipeItem({
   onRecipeComment,
   onDeleteComment,
 }: RecipeItemProps) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const { user, isSignedIn } = useUser();
 
   function getRecipeTitle() {
@@ -56,7 +56,15 @@ export function RecipeItem({
     <section ref={printRef} className="recipe-item border p-4 rounded bg-stone-100 print:border-none print:bg-white">
       <div className="flex flex-col gap-2">
         <div className="flex justify-items-center mt-2 text-center justify-between">
-          <div className="text-2xl">{getRecipeTitle()}</div>
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">{getRecipeTitle()}</div>
+            {recipe.comments && recipe.comments.length > 0 && (
+              <div className="flex items-center gap-1 text-sm text-gray-700 font-semibold">
+                <MessageCircle size={16} />
+                <span>{recipe.comments.length}</span>
+              </div>
+            )}
+          </div>
           <div className="flex gap-2 print:hidden">
             {isSignedIn ? (
               recipe.user.id == user?.id ? (
@@ -81,23 +89,32 @@ export function RecipeItem({
             </Button>
           </div>
         </div>
-        <span className="text-sm">{formatDate(recipe.updatedAt.toString(), "medium")}</span>
-        <div className="flex items-center gap-2 text-sm mt-1">
-          <img
-            src={recipe.user.imageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(recipe.user.username)}&background=random`}
-            alt={`${recipe.user.username}'s profile`}
-            className="w-6 h-6 rounded-full object-cover"
-          />
-          <span>{recipe.user.username}</span>
-        </div>
-        <div className="flex flex-col print:flex-row print:flex print:gap-4">
-          {recipe.prepTime ? <span>Preptime: {recipe.prepTime} mins</span> : <></>}
-          {recipe.cookTime ? <span>Cooktime: {recipe.cookTime} mins</span> : <></>}
-          {recipe.ovenTemp ? <span>Oven Preheat: {recipe.ovenTemp}&deg;F</span> : <></>}
-          {recipe.servings ? <span>Servings: {recipe.servings}</span> : <></>}
-        </div>
-        <div className="mb-4 print:my-1">
-          <ParagraphLink>{recipe.description}</ParagraphLink>
+        <div className="flex gap-4 flex-col md:flex-row">
+          <div className="flex-1 min-w-0 flex flex-col gap-2">
+            <span className="text-sm">{formatDate(recipe.updatedAt.toString(), "medium")}</span>
+            <div className="flex items-center gap-2 text-sm mt-1">
+              <img
+                src={recipe.user.imageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(recipe.user.username)}&background=random`}
+                alt={`${recipe.user.username}'s profile`}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+              <span className="text-base font-medium">{recipe.user.username}</span>
+            </div>
+            <div className="flex flex-col print:flex-row print:flex print:gap-4">
+              {recipe.prepTime ? <span>Preptime: {recipe.prepTime} mins</span> : <></>}
+              {recipe.cookTime ? <span>Cooktime: {recipe.cookTime} mins</span> : <></>}
+              {recipe.ovenTemp ? <span>Oven Preheat: {recipe.ovenTemp}&deg;F</span> : <></>}
+              {recipe.servings ? <span>Servings: {recipe.servings}</span> : <></>}
+            </div>
+            <div className="mb-4 print:my-1 break-words">
+              <ParagraphLink>{recipe.description}</ParagraphLink>
+            </div>
+          </div>
+          {recipe.imageUrl && (
+            <div className="w-full md:w-64 flex-shrink-0 print:hidden">
+              <img src={recipe.imageUrl} alt={recipe.name} className="w-full h-64 object-cover rounded" />
+            </div>
+          )}
         </div>
 
         <div className="flex gap-4 flex-col">

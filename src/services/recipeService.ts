@@ -9,12 +9,12 @@ export async function fetchUserSavedRecipes(sessionToken: string) {
   return await recipeRepo.getUserSavedRecipes(sessionToken);
 }
 
-export async function createNewRecipe(recipe: CreateUpdateRecipe, sessionToken: string) {
-  return await recipeRepo.createRecipe(recipe, sessionToken);
+export async function createNewRecipe(recipe: CreateUpdateRecipe, sessionToken: string, imageFile?: File | null) {
+  return await recipeRepo.createRecipe(recipe, sessionToken, imageFile);
 }
 
-export async function updateRecipe(recipe: CreateUpdateRecipe, sessionToken: string) {
-  return await recipeRepo.updateRecipe(recipe, sessionToken);
+export async function updateRecipe(recipe: CreateUpdateRecipe, sessionToken: string, imageFile?: File | null) {
+  return await recipeRepo.updateRecipe(recipe, sessionToken, imageFile);
 }
 
 export async function deleteRecipe(recipeId: string, sessionToken: string) {

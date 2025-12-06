@@ -11,4 +11,6 @@ export interface CreateUpdateRecipe {
   prepTime?: number; // mins
   cookTime?: number; // mins
   ovenTemp?: number;
+  imageUrl?: string;
+  cloudinaryId?: string;
 }

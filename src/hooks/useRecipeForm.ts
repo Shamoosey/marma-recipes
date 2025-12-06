@@ -16,6 +16,8 @@ const DEFAULT_RECIPE = {
   ingredients: [],
   steps: [],
   id: undefined,
+  imageUrl: undefined,
+  cloudinaryId: undefined,
 } as CreateUpdateRecipe;
 
 export function useRecipeForm() {
@@ -24,6 +26,8 @@ export function useRecipeForm() {
   const [errors, setErrors] = useState<Map<string, string>>(new Map());
   const [steps, setSteps] = useState<string[]>([]);
   const [ingredients, setIngredients] = useState<string[]>([]);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
     if (steps.length > 0) {
@@ -33,6 +37,12 @@ export function useRecipeForm() {
       clearFieldError("ingredients");
     }
   }, [ingredients, steps]);
+
+  useEffect(() => {
+    if (recipeData.imageUrl && !imageFile) {
+      setImagePreview(recipeData.imageUrl);
+    }
+  }, [recipeData.imageUrl, imageFile]);
 
   const clearFieldError = (field: string) => {
     setErrors((prev) => {
@@ -53,15 +63,46 @@ export function useRecipeForm() {
       [field]: value,
     });
   };
+
+  const handleImageChange = (file: File | null) => {
+    if (!file) {
+      setImageFile(null);
+      setImagePreview(null);
+      clearFieldError("image");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setErrors((prev) => new Map(prev).set("image", "Image must be less than 5MB"));
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      setErrors((prev) => new Map(prev).set("image", "Only image files are allowed"));
+      return;
+    }
+
+    setImageFile(file);
+    clearFieldError("image");
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const onReset = () => {
     setRecipeData(DEFAULT_RECIPE);
     setIngredients([]);
     setSteps([]);
+    setImageFile(null);
+    setImagePreview(null);
     clearAllErrors();
   };
 
   const onSubmitForm = async (formMode: "create" | "edit") => {
-    let sessionToken = (await getToken()) ?? null;
+    const sessionToken = (await getToken()) ?? null;
 
     if (!sessionToken) {
       throw new Error("Unauthorized");
@@ -75,12 +116,15 @@ export function useRecipeForm() {
         steps,
       };
       if (formMode == "create") {
-        const newRecipe = await RecipeService.createNewRecipe(recipe, sessionToken);
+        const newRecipe = await RecipeService.createNewRecipe(recipe, sessionToken, imageFile);
         recipe.id = newRecipe.id;
+        recipe.imageUrl = newRecipe.imageUrl;
+        recipe.cloudinaryId = newRecipe.cloudinaryId;
       } else {
-        await RecipeService.updateRecipe(recipe, sessionToken);
+        const updatedRecipe = await RecipeService.updateRecipe(recipe, sessionToken, imageFile);
+        recipe.imageUrl = updatedRecipe.imageUrl;
+        recipe.cloudinaryId = updatedRecipe.cloudinaryId;
       }
-      //display a toast message for a successful update/create
       const toastMessage = `Successfully ${formMode == "create" ? "created new" : "updated"}  recipe ${recipe.name}!`;
       toast(toastMessage, {
         position: "bottom-center",
@@ -95,5 +139,20 @@ export function useRecipeForm() {
     return null;
   };
 
-  return { recipeData, steps, ingredients, errors, onReset, handleFormChange, clearAllErrors, setIngredients, setSteps, setRecipeData, onSubmitForm };
+  return {
+    recipeData,
+    steps,
+    ingredients,
+    errors,
+    imageFile,
+    imagePreview,
+    onReset,
+    handleFormChange,
+    handleImageChange,
+    clearAllErrors,
+    setIngredients,
+    setSteps,
+    setRecipeData,
+    onSubmitForm,
+  };
 }

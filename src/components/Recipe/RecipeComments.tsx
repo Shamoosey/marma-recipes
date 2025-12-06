@@ -42,16 +42,16 @@ export function RecipeComments({ recipeId, comments, onRecipeComment, onDeleteCo
               />
               <div className="flex flex-col flex-grow min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-medium">{x.username}</span>
+                  <span className="font-medium text-lg">{x.username}</span>
                   <span className="text-sm text-gray-600">{formatDate(x.createdAt.toString(), "short")}</span>
-                  {user?.id == x.userId && (
-                    <Button variant="text" icon onClick={() => onDeleteComment(x.id)} className="ml-auto">
-                      <Trash className="w-4 h-4 text-red-600" />
-                    </Button>
-                  )}
                 </div>
-                <span className="text-sm mt-1 break-words">{x.text}</span>
+                <span className="text-md mt-1 break-words">{x.text}</span>
               </div>
+              {user?.id == x.userId && (
+                <Button variant="text" icon onClick={() => onDeleteComment(x.id)} className="ml-auto">
+                  <Trash className="w-6 h-6 text-red-600" />
+                </Button>
+              )}
             </div>
           ))}
         </div>
@@ -59,9 +59,9 @@ export function RecipeComments({ recipeId, comments, onRecipeComment, onDeleteCo
         <span>No comments yet</span>
       )}
       <div className="flex gap-2 pt-2">
-        <Input placeholder="Type your comment" className="flex-grow" required value={commentText} onChange={(x) => setCommmentText(x.target.value)} />
+        <Input placeholder="Leave a comment" className="flex-grow" required value={commentText} onChange={(x) => setCommmentText(x.target.value)} />
         <Button variant="green" onClick={() => onCreateComment()} className="px-4">
-          Comment
+          Submit
         </Button>
       </div>
       {error != null && <span className="text-red-500 font-semibold">{error}</span>}

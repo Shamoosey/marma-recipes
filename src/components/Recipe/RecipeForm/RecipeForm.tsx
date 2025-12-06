@@ -14,15 +14,28 @@ interface RecipeFormProps {
 
 export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
   const { recipes } = useRecipes([]);
-  const { ingredients, recipeData, steps, errors, onReset, handleFormChange, setIngredients, setSteps, setRecipeData, onSubmitForm } = useRecipeForm();
+  const {
+    ingredients,
+    recipeData,
+    steps,
+    errors,
+    imagePreview,
+    onReset,
+    handleFormChange,
+    handleImageChange,
+    setIngredients,
+    setSteps,
+    setRecipeData,
+    onSubmitForm,
+  } = useRecipeForm();
   const { recipeTypes } = useRecipeTypes([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    //When the formMode is "edit" and a recipeId is passed in, find the associated recipe and use that to fill the form fields for an update
     if (formMode == "edit" && recipeId) {
       const editedRecipe = recipes.find((x) => x.id == recipeId);
       if (editedRecipe) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { updatedAt, createdAt, user, userId, ...data } = { ...editedRecipe };
         setRecipeData(data);
         setIngredients(editedRecipe.ingredients);
@@ -72,6 +85,22 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                 ))}
               </Select>
               {errors.has("recipeTypeId") && <span className="text-red-500 font-semibold text-sm">{errors.get("recipeTypeId")}</span>}
+            </div>
+            <div className="flex flex-col">
+              <span>Recipe Image</span>
+              <Input type="file" accept="image/*" onChange={(e) => handleImageChange(e.target.files?.[0] || null)} className="border rounded p-2 w-full" />
+              {errors.has("image") && <span className="text-red-500 font-semibold text-sm">{errors.get("image")}</span>}
+              {imagePreview && (
+                <div className="mt-2 flex-shrink-0 relative">
+                  <img src={imagePreview} alt="Recipe preview" className="w-full h-32 object-cover rounded" />
+                  <button
+                    type="button"
+                    onClick={() => handleImageChange(null)}
+                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                    ✕
+                  </button>
+                </div>
+              )}
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex flex-col flex-grow">
