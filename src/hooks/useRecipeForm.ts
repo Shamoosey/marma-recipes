@@ -28,6 +28,7 @@ export function useRecipeForm() {
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [formLoading, setFormLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (steps.length > 0) {
@@ -112,6 +113,7 @@ export function useRecipeForm() {
         ingredients,
         steps,
       };
+      setFormLoading(true);
       if (formMode == "create") {
         const newRecipe = await RecipeService.createNewRecipe(recipe, sessionToken, imagePreview);
         recipe.id = newRecipe.id;
@@ -125,6 +127,7 @@ export function useRecipeForm() {
         recipe.imageUrl = updatedRecipe.imageUrl;
         recipe.cloudinaryId = updatedRecipe.cloudinaryId;
       }
+      setFormLoading(false);
       const toastMessage = `Successfully ${formMode == "create" ? "created new" : "updated"}  recipe ${recipe.name}!`;
       toast(toastMessage, {
         position: "bottom-center",
@@ -186,6 +189,7 @@ export function useRecipeForm() {
     errors,
     imageFile,
     imagePreview,
+    formLoading,
     onReset,
     handleFormChange,
     handleImageChange,

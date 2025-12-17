@@ -5,7 +5,7 @@ import { RecipeStepsForm } from "./StepsForm";
 import { useRecipes } from "@/hooks/useRecipes";
 import { useRecipeForm } from "@/hooks/useRecipeForm";
 import { useRecipeTypes } from "@/hooks/useRecipeTypes";
-import { Button, Input, Select, Textarea } from "@/components/ui";
+import { Button, Input, LoadingSpinner, Select, Textarea } from "@/components/ui";
 
 interface RecipeFormProps {
   formMode: "edit" | "create";
@@ -20,6 +20,7 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
     steps,
     errors,
     imagePreview,
+    formLoading,
     onReset,
     handleFormChange,
     handleImageChange,
@@ -155,12 +156,13 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
           <RecipeStepsForm steps={steps} setSteps={setSteps} error={errors.get("steps")} />
         </div>
         <div className="flex flex-col sm:flex-row justify-start gap-4 mt-2">
-          <Button type="button" onClick={() => onSubmit()} disabled={errors.values.length > 0} variant="green" className="w-full sm:w-50">
+          <Button disabled={formLoading || errors.values.length > 0} type="button" onClick={() => onSubmit()} variant="green" className="w-full sm:w-50">
             {formMode == "create" ? "Create" : "Update"}
           </Button>
-          <Button type="button" onClick={() => onReset()} variant="red" className="w-full sm:w-50">
+          <Button disabled={formLoading} type="button" onClick={() => onReset()} variant="red" className="w-full sm:w-40">
             Reset
           </Button>
+          {formLoading ? <LoadingSpinner /> : <></>}
         </div>
       </form>
     </section>
