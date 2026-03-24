@@ -7,10 +7,17 @@ interface RemovableFormListProps {
   data: string[];
   numbered?: boolean;
   onTrashClick: (index: number) => void;
+  onEditClick: (index: number) => void;
   onReorder: (newData: string[]) => void;
 }
 
-export function RemovableFormList({ data, onTrashClick, numbered = false, onReorder }: RemovableFormListProps) {
+export function RemovableFormList({
+  data,
+  onEditClick,
+  onTrashClick,
+  numbered = false,
+  onReorder,
+}: RemovableFormListProps) {
   const { sensors, handleDragEnd, items } = useSortableList(data, onReorder);
 
   return (
@@ -18,7 +25,12 @@ export function RemovableFormList({ data, onTrashClick, numbered = false, onReor
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
           {data.map((x, i) => (
-            <SortableItem key={`${x}-${i}`} id={i.toString()} index={i} onTrashClick={onTrashClick}>
+            <SortableItem
+              key={`${x}-${i}`}
+              id={i.toString()}
+              index={i}
+              onEditClick={onEditClick}
+              onTrashClick={onTrashClick}>
               {numbered ? `${i + 1}. ` : ""}
               {x}
             </SortableItem>
