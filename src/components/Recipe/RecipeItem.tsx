@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import { Edit, MessageCircle, Printer, Star, Trash } from "lucide-react";
+import { Edit, Heart, MessageCircle, MessageCircleHeart, Printer, Star, Trash } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import type { Recipe } from "@/types/Recipe";
 import type { RecipeType } from "@/types/RecipeType";
@@ -53,7 +53,9 @@ export function RecipeItem({
   });
 
   return (
-    <section ref={printRef} className="recipe-item border p-4 rounded bg-stone-100 print:border-none print:bg-white mb-2">
+    <section
+      ref={printRef}
+      className="recipe-item border p-4 rounded bg-stone-100 print:border-none print:bg-white mb-2">
       <div className="flex flex-col gap-2">
         <div className="flex justify-items-center mt-2 text-center justify-between">
           <div className="flex items-center gap-3">
@@ -62,6 +64,13 @@ export function RecipeItem({
               <div className="flex items-center gap-1 text-sm text-gray-700 font-semibold">
                 <MessageCircle size={16} />
                 <span>{recipe.comments.length}</span>
+              </div>
+            )}
+
+            {recipe.likeCount > 0 && (
+              <div className="flex items-center gap-1 text-sm text-gray-700 font-semibold">
+                <Star size={16} />
+                <span>{recipe.likeCount}</span>
               </div>
             )}
           </div>
@@ -94,11 +103,16 @@ export function RecipeItem({
             <span className="text-sm">{formatDate(recipe.createdAt.toString(), "medium")}</span>
             <div className="flex items-center gap-2 text-sm mt-1">
               <img
-                src={recipe.user.imageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(recipe.user.username)}&background=random`}
+                src={
+                  recipe.user.imageUrl ||
+                  `https://ui-avatars.com/api/?name=${encodeURIComponent(recipe.user.username)}&background=random`
+                }
                 alt={`${recipe.user.username}'s profile`}
                 className="w-8 h-8 rounded-full object-cover"
               />
-              <span className="text-base font-medium">{recipe.user.username}</span>
+              <Link to={`/recipes/user-recipes/${recipe.userId}`}>
+                <span className="text-base font-medium underline text-blue-950">{recipe.user.username}</span>
+              </Link>
             </div>
             <div className="flex flex-col print:flex-row print:flex print:gap-4">
               {recipe.prepTime ? <span>Preptime: {recipe.prepTime} mins</span> : <></>}

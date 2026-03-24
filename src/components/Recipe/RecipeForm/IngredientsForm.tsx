@@ -25,6 +25,13 @@ export function IngredientsForm({ ingredients, setIngredients, error }: Ingredie
     }
   };
 
+  const onEditIngredient = (index: number) => {
+    const data = [...ingredients];
+    const edited = data.splice(index, 1)[0];
+    setNewIngredient(edited);
+    setIngredients(data);
+  };
+
   const onRemoveIngredient = (index: number) => {
     const data = [...ingredients];
     data.splice(index, 1);
@@ -54,12 +61,22 @@ export function IngredientsForm({ ingredients, setIngredients, error }: Ingredie
           onKeyDown={(e) => onKeyDown(e)}
           onChange={(e) => setNewIngredient(e.target.value)}
         />
-        <Button className="mt-2 w-full sm:w-auto" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddIngredient()}>
+        <Button
+          className="mt-2 w-full sm:w-auto"
+          type="button"
+          variant="gray"
+          disabled={buttonDisabled}
+          onClick={() => onAddIngredient()}>
           Add Ingredients
         </Button>
         {error && <span className="text-red-500 font-semibold text-sm mt-1">{error}</span>}
       </div>
-      <RemovableFormList data={ingredients} onTrashClick={onRemoveIngredient} onReorder={setIngredients} />
+      <RemovableFormList
+        data={ingredients}
+        onTrashClick={onRemoveIngredient}
+        onEditClick={onEditIngredient}
+        onReorder={setIngredients}
+      />
     </section>
   );
 }

@@ -1,6 +1,6 @@
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui";
-import { Trash, GripVertical } from "lucide-react";
+import { Trash, GripVertical, Pencil } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 
 export function SortableItem({
@@ -8,11 +8,13 @@ export function SortableItem({
   index,
   children,
   onTrashClick,
+  onEditClick,
 }: {
   id: string;
   index: number;
   children: React.ReactNode;
   onTrashClick: (index: number) => void;
+  onEditClick: (index: number) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
@@ -33,15 +35,30 @@ export function SortableItem({
         <GripVertical width={16} height={16} className="text-stone-500" />
         <span>{children}</span>
       </div>
-      <Button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onTrashClick(index);
-        }}
-        onPointerDown={(e) => e.stopPropagation()}>
-        <Trash width={16} height={16} />
-      </Button>
+      <div>
+        <Button
+          className="cursor-pointer"
+          type="button"
+          variant="text"
+          onClick={(e) => {
+            e.stopPropagation();
+            onEditClick(index);
+          }}
+          onPointerDown={(e) => e.stopPropagation()}>
+          <Pencil width={16} height={16} />
+        </Button>
+        <Button
+          className="cursor-pointer"
+          type="button"
+          variant="text"
+          onClick={(e) => {
+            e.stopPropagation();
+            onTrashClick(index);
+          }}
+          onPointerDown={(e) => e.stopPropagation()}>
+          <Trash width={16} height={16} />
+        </Button>
+      </div>
     </div>
   );
 }
