@@ -19,6 +19,8 @@ export interface Recipe {
   user: User;
   userId: string;
 
+  likeCount: number;
+
   imageUrl?: string;
   cloudinaryId?: string;
 
