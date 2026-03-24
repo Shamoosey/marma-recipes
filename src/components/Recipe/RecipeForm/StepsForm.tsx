@@ -25,6 +25,13 @@ export function RecipeStepsForm({ setSteps, steps, error }: RecipeStepsFormProps
     }
   };
 
+  const onEditStep = (index: number) => {
+    const data = [...steps];
+    const edited = data.splice(index, 1)[0];
+    setNewStep(edited);
+    setSteps(data);
+  };
+
   const onRemoveStep = (index: number) => {
     const data = [...steps];
     data.splice(index, 1);
@@ -53,12 +60,23 @@ export function RecipeStepsForm({ setSteps, steps, error }: RecipeStepsFormProps
           onKeyDown={(e) => onKeyDown(e)}
           onChange={(e) => setNewStep(e.target.value)}
         />
-        <Button className="mt-2 w-full sm:w-auto" type="button" variant="gray" disabled={buttonDisabled} onClick={() => onAddStep()}>
+        <Button
+          className="mt-2 w-full sm:w-auto"
+          type="button"
+          variant="gray"
+          disabled={buttonDisabled}
+          onClick={() => onAddStep()}>
           Add Steps
         </Button>
         {error && <span className="text-red-500 font-semibold text-sm mt-1">{error}</span>}
       </div>
-      <RemovableFormList data={steps} numbered={true} onTrashClick={onRemoveStep} onReorder={setSteps} />
+      <RemovableFormList
+        data={steps}
+        numbered={true}
+        onTrashClick={onRemoveStep}
+        onEditClick={onEditStep}
+        onReorder={setSteps}
+      />
     </section>
   );
 }

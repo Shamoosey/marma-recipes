@@ -1,16 +1,20 @@
 import { RecipeList } from "@/components/Recipe/RecipeList";
 import { useFilteredRecipes } from "@/hooks/useFilteredRecipes";
 import { useRecipeData } from "@/hooks/useRecipeData";
-import { useUser } from "@clerk/clerk-react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
-export function MyRecipes() {
+export function UserRecipes() {
   const recipeData = useRecipeData();
-  const { user } = useUser();
-  const { filteredRecipes, setRecipeType, setSearchTerm } = useFilteredRecipes(recipeData.recipes, [], (recipe) => recipe.userId == user?.id);
+  const { id } = useParams();
+  console.log(id);
+  const { filteredRecipes, setRecipeType, setSearchTerm } = useFilteredRecipes(
+    recipeData.recipes,
+    [],
+    (recipe) => recipe.userId == id,
+  );
 
   let navigate = useNavigate();
-  if (!user) {
+  if (!id) {
     navigate("/not-found");
   }
 

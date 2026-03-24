@@ -1,11 +1,12 @@
 import { Link } from "react-router";
-import { SignedIn, useAuth, UserButton } from "@clerk/clerk-react";
+import { SignedIn, useAuth, UserButton, useUser } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/Button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 export function Navbar() {
   const { isSignedIn } = useAuth();
+  const user = useUser();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -33,7 +34,7 @@ export function Navbar() {
               <Link to="/recipes/saved-recipes">
                 <Button variant="text">Saved Recipes</Button>
               </Link>
-              <Link to="/recipes/my-recipes">
+              <Link to={`/recipes/user-recipes/${user.user?.id}`}>
                 <Button variant="text">My Recipes</Button>
               </Link>
               <Link to="/recipes/create">
@@ -46,7 +47,7 @@ export function Navbar() {
           </SignedIn>
         </div>
 
-        {isOpen && <div className="fixed inset-0 bg-black bg-opacity-0 z-40 md:hidden" onClick={closeMenu} />}
+        {isOpen && <div className="fixed inset-0 z-40 md:hidden" onClick={closeMenu} />}
 
         <div
           className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg md:hidden z-50 transform transition-transform duration-300 ease-in-out ${
@@ -64,7 +65,7 @@ export function Navbar() {
                 <Link to="/recipes/saved-recipes" onClick={closeMenu}>
                   <Button className="w-full">Saved Recipes</Button>
                 </Link>
-                <Link to="/recipes/my-recipes" onClick={closeMenu}>
+                <Link to={`/recipes/user-recipes/${user.user?.id}`} onClick={closeMenu}>
                   <Button className="w-full">My Recipes</Button>
                 </Link>
                 <Link to="/recipes/create" onClick={closeMenu}>
