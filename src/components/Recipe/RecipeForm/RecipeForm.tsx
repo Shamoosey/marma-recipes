@@ -60,7 +60,12 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
           <div className="flex flex-col gap-2 flex-grow lg:max-w-md">
             <div className="flex flex-col">
               <span>Recipe Name</span>
-              <Input placeholder="Recipe Name" name="recipeName" value={recipeData.name} onChange={(e) => handleFormChange("name", e.target.value)} />
+              <Input
+                placeholder="Recipe Name"
+                name="recipeName"
+                value={recipeData.name}
+                onChange={(e) => handleFormChange("name", e.target.value)}
+              />
               {errors.has("name") && <span className="text-red-500 font-semibold text-sm">{errors.get("name")}</span>}
             </div>
             <div className="flex flex-col">
@@ -73,11 +78,16 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                 value={recipeData.description}
                 onChange={(e) => handleFormChange("description", e.target.value)}
               />
-              {errors.has("description") && <span className="text-red-500 font-semibold text-sm">{errors.get("description")}</span>}
+              {errors.has("description") && (
+                <span className="text-red-500 font-semibold text-sm">{errors.get("description")}</span>
+              )}
             </div>
             <div className="flex flex-col">
               <span>Recipe Type</span>
-              <Select name="recipeTypeId" value={recipeData.recipeTypeId} onChange={(e) => handleFormChange("recipeTypeId", e.target.value)}>
+              <Select
+                name="recipeTypeId"
+                value={recipeData.recipeTypeId}
+                onChange={(e) => handleFormChange("recipeTypeId", e.target.value)}>
                 <option disabled selected></option>
                 {recipeTypes.map((x) => (
                   <option key={x.id} value={x.id}>
@@ -85,11 +95,18 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   </option>
                 ))}
               </Select>
-              {errors.has("recipeTypeId") && <span className="text-red-500 font-semibold text-sm">{errors.get("recipeTypeId")}</span>}
+              {errors.has("recipeTypeId") && (
+                <span className="text-red-500 font-semibold text-sm">{errors.get("recipeTypeId")}</span>
+              )}
             </div>
             <div className="flex flex-col">
               <span>Recipe Image</span>
-              <Input type="file" accept="image/*" onChange={(e) => handleImageChange(e.target.files?.[0] || null)} className="border rounded p-2 w-full" />
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageChange(e.target.files?.[0] || null)}
+                className="border rounded p-2 w-full"
+              />
               {errors.has("image") && <span className="text-red-500 font-semibold text-sm">{errors.get("image")}</span>}
               {imagePreview && (
                 <div className="mt-2 flex-shrink-0 relative">
@@ -113,7 +130,9 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   value={recipeData.servings ?? ""}
                   onChange={(e) => handleFormChange("servings", Number.parseInt(e.target.value))}
                 />
-                {errors.has("servings") && <span className="text-red-500 font-semibold text-sm">{errors.get("servings")}</span>}
+                {errors.has("servings") && (
+                  <span className="text-red-500 font-semibold text-sm">{errors.get("servings")}</span>
+                )}
               </div>
               <div className="flex flex-col flex-grow">
                 <span>Oven Temp (F)</span>
@@ -124,7 +143,9 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   value={recipeData.ovenTemp ?? ""}
                   onChange={(e) => handleFormChange("ovenTemp", Number.parseInt(e.target.value))}
                 />
-                {errors.has("ovenTemp") && <span className="text-red-500 font-semibold text-sm">{errors.get("ovenTemp")}</span>}
+                {errors.has("ovenTemp") && (
+                  <span className="text-red-500 font-semibold text-sm">{errors.get("ovenTemp")}</span>
+                )}
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -137,7 +158,9 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   value={recipeData.prepTime ?? ""}
                   onChange={(e) => handleFormChange("prepTime", Number.parseInt(e.target.value))}
                 />
-                {errors.has("prepTime") && <span className="text-red-500 font-semibold text-sm">{errors.get("prepTime")}</span>}
+                {errors.has("prepTime") && (
+                  <span className="text-red-500 font-semibold text-sm">{errors.get("prepTime")}</span>
+                )}
               </div>
               <div className="flex flex-col flex-grow">
                 <span>Cook Time (Mins)</span>
@@ -148,18 +171,43 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                   value={recipeData.cookTime ?? ""}
                   onChange={(e) => handleFormChange("cookTime", Number.parseInt(e.target.value))}
                 />
-                {errors.has("cookTime") && <span className="text-red-500 font-semibold text-sm">{errors.get("cookTime")}</span>}
+                {errors.has("cookTime") && (
+                  <span className="text-red-500 font-semibold text-sm">{errors.get("cookTime")}</span>
+                )}
               </div>
             </div>
+            <div>
+              <span className="mx-2">Send Notification to Discord:</span>
+              <Input
+                type="checkbox"
+                checked={recipeData.sendNotification}
+                onChange={(e) => handleFormChange("sendNotification", e.target.checked)}
+                className="p-2"
+              />
+            </div>
           </div>
-          <IngredientsForm ingredients={ingredients} setIngredients={setIngredients} error={errors.get("ingredients")} />
+          <IngredientsForm
+            ingredients={ingredients}
+            setIngredients={setIngredients}
+            error={errors.get("ingredients")}
+          />
           <RecipeStepsForm steps={steps} setSteps={setSteps} error={errors.get("steps")} />
         </div>
         <div className="flex flex-col sm:flex-row justify-start gap-4 mt-2">
-          <Button disabled={formLoading || errors.values.length > 0} type="button" onClick={() => onSubmit()} variant="green" className="w-full sm:w-50">
+          <Button
+            disabled={formLoading || errors.values.length > 0}
+            type="button"
+            onClick={() => onSubmit()}
+            variant="green"
+            className="w-full sm:w-50">
             {formMode == "create" ? "Create" : "Update"}
           </Button>
-          <Button disabled={formLoading} type="button" onClick={() => onReset()} variant="red" className="w-full sm:w-40">
+          <Button
+            disabled={formLoading}
+            type="button"
+            onClick={() => onReset()}
+            variant="red"
+            className="w-full sm:w-40">
             Reset
           </Button>
           {formLoading ? <LoadingSpinner /> : <></>}
