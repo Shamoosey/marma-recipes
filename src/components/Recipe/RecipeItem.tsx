@@ -110,7 +110,9 @@ export function RecipeItem({
                 alt={`${recipe.user.username}'s profile`}
                 className="w-8 h-8 rounded-full object-cover"
               />
-              <span className="text-base font-medium">{recipe.user.username}</span>
+              <Link to={`/recipes/user-recipes/${recipe.userId}`}>
+                <span className="text-base font-medium underline text-blue-950">{recipe.user.username}</span>
+              </Link>
             </div>
             <div className="flex flex-col print:flex-row print:flex print:gap-4">
               {recipe.prepTime ? <span>Preptime: {recipe.prepTime} mins</span> : <></>}

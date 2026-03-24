@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout/Layout";
 import { Recipes } from "@/pages/Recipe/AllRecipes";
 import { Landing } from "@/pages/Landing";
 import { NotFound } from "@/pages/NotFound";
-import { MyRecipes } from "@/pages/Recipe/MyRecipes";
+import { UserRecipes } from "@/pages/Recipe/UserRecipes";
 import { CreateRecipe } from "@/pages/Recipe/CreateRecipe";
 import { UpdateRecipe } from "@/pages/Recipe/UpdateRecipe";
 import { ViewRecipe } from "@/pages/Recipe/ViewRecipe";
@@ -44,10 +44,10 @@ function App() {
               }
             />
             <Route
-              path="my-recipes"
+              path="user-recipes/:id"
               element={
                 <ProtectedRoute>
-                  <MyRecipes />
+                  <UserRecipes />
                 </ProtectedRoute>
               }
             />
