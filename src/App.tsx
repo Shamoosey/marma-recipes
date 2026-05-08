@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Layout } from "@/components/Layout/Layout";
 import { Recipes } from "@/pages/Recipe/AllRecipes";
-import { Landing } from "@/pages/Landing";
 import { NotFound } from "@/pages/NotFound";
 import { UserRecipes } from "@/pages/Recipe/UserRecipes";
 import { CreateRecipe } from "@/pages/Recipe/CreateRecipe";
@@ -17,7 +16,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Landing />} />
+          <Route index element={<Recipes />} />
           <Route
             path="admin"
             element={
@@ -27,14 +26,7 @@ function App() {
             }
           />
           <Route path="recipes">
-            <Route
-              index
-              element={
-                <ProtectedRoute>
-                  <Recipes />
-                </ProtectedRoute>
-              }
-            />
+            <Route index element={<Recipes />} />
             <Route
               path="saved-recipes"
               element={
@@ -43,22 +35,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="user-recipes/:id"
-              element={
-                <ProtectedRoute>
-                  <UserRecipes />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path=":id"
-              element={
-                <ProtectedRoute>
-                  <ViewRecipe />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="user-recipes/:id" element={<UserRecipes />} />
+            <Route path=":id" element={<ViewRecipe />} />
             <Route
               path=":id/edit"
               element={
