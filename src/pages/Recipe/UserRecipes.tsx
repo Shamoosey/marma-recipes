@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router";
 export function UserRecipes() {
   const recipeData = useRecipeData();
   const { id } = useParams();
-  console.log(id);
   const { filteredRecipes, setRecipeType, setSearchTerm } = useFilteredRecipes(
     recipeData.recipes,
     [],

@@ -5,12 +5,8 @@ import type { Recipe } from "@/types/Recipe";
 //Setup the base url with the route prefix using the VITE_API_BASE_URL variable defined in the .env file
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
-export async function getRecipes(sessionToken: string) {
-  const recipeResponse: Response = await fetch(`${BASE_URL}/recipes`, {
-    headers: {
-      Authorization: `Bearer ${sessionToken}`,
-    },
-  });
+export async function getRecipes() {
+  const recipeResponse: Response = await fetch(`${BASE_URL}/recipes`);
 
   if (!recipeResponse.ok) {
     throw new Error("Failed to fetch recipes");
@@ -35,12 +31,8 @@ export async function getUserSavedRecipes(sessionToken: string) {
   return json.data;
 }
 
-export async function getRecipeById(recipeId: string, sessionToken: string): Promise<Recipe> {
-  const recipeResponse: Response = await fetch(`${BASE_URL}/recipes/${recipeId}`, {
-    headers: {
-      Authorization: `Bearer ${sessionToken}`,
-    },
-  });
+export async function getRecipeById(recipeId: string): Promise<Recipe> {
+  const recipeResponse: Response = await fetch(`${BASE_URL}/recipes/${recipeId}`);
 
   if (!recipeResponse.ok) {
     throw new Error(`Failed to fetch recipe with id ${recipeId}`);

@@ -13,7 +13,7 @@ interface RecipeFormProps {
 }
 
 export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
-  const { recipes } = useRecipes([]);
+  const { recipes } = useRecipes();
   const {
     ingredients,
     recipeData,
@@ -29,7 +29,7 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
     setRecipeData,
     onSubmitForm,
   } = useRecipeForm();
-  const { recipeTypes } = useRecipeTypes([]);
+  const { data: recipeTypes = [] } = useRecipeTypes();
   const navigate = useNavigate();
 
   useEffect(() => {

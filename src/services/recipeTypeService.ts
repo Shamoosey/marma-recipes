@@ -1,7 +1,7 @@
 import * as recipeTypeRepo from "@/apis/recipeTypeRepo";
 
-export async function fetchRecipeTypes(sessionToken: string) {
-  const recipeTypes = await recipeTypeRepo.getRecipeTypes(sessionToken);
+export async function fetchRecipeTypes() {
+  const recipeTypes = await recipeTypeRepo.getRecipeTypes();
   return recipeTypes;
 }
 

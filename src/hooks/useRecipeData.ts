@@ -2,10 +2,17 @@ import { useRecipes } from "./useRecipes";
 import { useRecipeTypes } from "./useRecipeTypes";
 
 export function useRecipeData() {
-  const { recipes, userSavedRecipeIds, loadingRecipes, recipesError, toggleSavedRecipe, deleteRecipe, createRecipeComment, deleteRecipeComment } = useRecipes(
-    []
-  );
-  const { recipeTypes } = useRecipeTypes([]);
+  const {
+    recipes,
+    userSavedRecipeIds,
+    loadingRecipes,
+    recipesError,
+    toggleSavedRecipe,
+    deleteRecipe,
+    createRecipeComment,
+    deleteRecipeComment,
+  } = useRecipes();
+  const { data: recipeTypes = [] } = useRecipeTypes();
 
   return {
     recipes,
@@ -15,7 +22,7 @@ export function useRecipeData() {
     recipesError,
     toggleSavedRecipe,
     deleteRecipe,
-    createRecipeComment,
-    deleteRecipeComment,
+    createRecipeComment: (recipeId: string, text: string) => createRecipeComment({ recipeId, text }),
+    deleteRecipeComment: (recipeId: string, commentId: string) => deleteRecipeComment({ recipeId, commentId }),
   };
 }
