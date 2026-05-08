@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Layout } from "@/components/Layout/Layout";
 import { Recipes } from "@/pages/Recipe/AllRecipes";
-import { Landing } from "@/pages/Landing";
 import { NotFound } from "@/pages/NotFound";
 import { UserRecipes } from "@/pages/Recipe/UserRecipes";
 import { CreateRecipe } from "@/pages/Recipe/CreateRecipe";
