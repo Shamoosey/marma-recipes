@@ -15,7 +15,7 @@ export interface RecipeCommentsProps {
 export function RecipeComments({ recipeId, comments, onRecipeComment, onDeleteComment }: RecipeCommentsProps) {
   const [commentText, setCommmentText] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const { user } = useUser();
+  const { user, isSignedIn } = useUser();
 
   const onCreateComment = async () => {
     if (commentText && commentText.trim() != "") {
@@ -36,7 +36,10 @@ export function RecipeComments({ recipeId, comments, onRecipeComment, onDeleteCo
           {comments.map((x) => (
             <div className="flex gap-3 px-2" key={x.id}>
               <img
-                src={x.userProfileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(x.username)}&background=random`}
+                src={
+                  x.userProfileUrl ||
+                  `https://ui-avatars.com/api/?name=${encodeURIComponent(x.username)}&background=random`
+                }
                 alt={`${x.username}'s profile`}
                 className="w-10 h-10 rounded-full object-cover flex-shrink-0"
               />
@@ -58,13 +61,25 @@ export function RecipeComments({ recipeId, comments, onRecipeComment, onDeleteCo
       ) : (
         <span>No comments yet</span>
       )}
-      <div className="flex gap-2 pt-2">
-        <Input placeholder="Leave a comment" className="flex-grow" required value={commentText} onChange={(x) => setCommmentText(x.target.value)} />
-        <Button variant="green" onClick={() => onCreateComment()} className="px-4">
-          Submit
-        </Button>
-      </div>
-      {error != null && <span className="text-red-500 font-semibold">{error}</span>}
+      {isSignedIn ? (
+        <>
+          <div className="flex gap-2 pt-2">
+            <Input
+              placeholder="Leave a comment"
+              className="flex-grow"
+              required
+              value={commentText}
+              onChange={(x) => setCommmentText(x.target.value)}
+            />
+            <Button variant="green" onClick={() => onCreateComment()} className="px-4">
+              Submit
+            </Button>
+          </div>
+          {error != null && <span className="text-red-500 font-semibold">{error}</span>}
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

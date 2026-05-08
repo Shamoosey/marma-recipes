@@ -3,12 +3,8 @@ import type { RecipeType } from "@/types/RecipeType";
 
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
-export async function getRecipeTypes(sessionToken: string) {
-  const recipeTypesResponse: Response = await fetch(`${BASE_URL}/recipeTypes`, {
-    headers: {
-      Authorization: `Bearer ${sessionToken}`,
-    },
-  });
+export async function getRecipeTypes() {
+  const recipeTypesResponse: Response = await fetch(`${BASE_URL}/recipeTypes`);
 
   if (!recipeTypesResponse.ok) {
     throw new Error("Failed to fetch recipeTypes");

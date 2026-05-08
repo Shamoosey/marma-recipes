@@ -36,14 +36,21 @@ export function RecipeList({
 }: RecipeListProps) {
   return (
     <section className="recipe-list">
-      <RecipeListFilter recipes={recipes} recipeTypes={recipeTypes} setRecipeType={setRecipeType} setSearchTerm={setSearchTerm} />
+      <RecipeListFilter
+        recipes={recipes}
+        recipeTypes={recipeTypes}
+        setRecipeType={setRecipeType}
+        setSearchTerm={setSearchTerm}
+      />
       {loadingRecipes && (
         <div className="flex justify-around mt-16">
           <LoadingSpinner />
         </div>
       )}
 
-      {!loadingRecipes && recipesError != null && <div className="text-red-400 text-xl font-semibold mt-4">{recipesError}</div>}
+      {!loadingRecipes && recipesError != null && (
+        <div className="text-red-400 text-xl font-semibold mt-4">{recipesError}</div>
+      )}
 
       {!loadingRecipes && !recipesError && recipes.length === 0 && <NoRecipesFound />}
 
@@ -51,7 +58,7 @@ export function RecipeList({
         !recipesError &&
         recipes.length > 0 &&
         recipes.map((x) => (
-          <div className="mt-2">
+          <div className="mt-2" key={x.id}>
             <RecipeItem
               key={x.id}
               recipe={x}

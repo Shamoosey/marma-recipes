@@ -17,7 +17,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Landing />} />
+          <Route index element={<Recipes />} />
           <Route
             path="admin"
             element={
@@ -27,14 +27,7 @@ function App() {
             }
           />
           <Route path="recipes">
-            <Route
-              index
-              element={
-                <ProtectedRoute>
-                  <Recipes />
-                </ProtectedRoute>
-              }
-            />
+            <Route index element={<Recipes />} />
             <Route
               path="saved-recipes"
               element={
@@ -43,22 +36,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="user-recipes/:id"
-              element={
-                <ProtectedRoute>
-                  <UserRecipes />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path=":id"
-              element={
-                <ProtectedRoute>
-                  <ViewRecipe />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="user-recipes/:id" element={<UserRecipes />} />
+            <Route path=":id" element={<ViewRecipe />} />
             <Route
               path=":id/edit"
               element={

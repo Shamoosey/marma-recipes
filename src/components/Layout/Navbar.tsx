@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { SignedIn, useAuth, UserButton, useUser } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton, useAuth, UserButton, useUser } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/Button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -26,11 +26,11 @@ export function Navbar() {
         </button>
 
         <div className="hidden md:flex flex-row gap-4 justify-around items-center">
+          <Link to="/recipes">
+            <Button variant="text">All Recipes</Button>
+          </Link>
           {isSignedIn ? (
             <>
-              <Link to="/recipes">
-                <Button variant="text">All Recipes</Button>
-              </Link>
               <Link to="/recipes/saved-recipes">
                 <Button variant="text">Saved Recipes</Button>
               </Link>
@@ -45,6 +45,11 @@ export function Navbar() {
           <SignedIn>
             <UserButton />
           </SignedIn>
+          <SignedOut>
+            <SignInButton>
+              <Button variant="text">Sign In</Button>
+            </SignInButton>
+          </SignedOut>
         </div>
 
         {isOpen && <div className="fixed inset-0 z-40 md:hidden" onClick={closeMenu} />}

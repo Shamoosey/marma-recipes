@@ -14,23 +14,13 @@ export function RecipeListFilter({ setRecipeType, setSearchTerm, recipeTypes, re
   return (
     <div>
       <div className="flex justify-between gap-6">
-        <Input
-          className="w-full"
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Find a recipe"
-        />
-        <Select
-          className="w-40"
-          onChange={(e) => setRecipeType(e.target.value)}>
-          <option
-            selected
-            value={undefined}>
+        <Input className="w-full" onChange={(e) => setSearchTerm(e.target.value)} placeholder="Find a recipe" />
+        <Select className="w-40" onChange={(e) => setRecipeType(e.target.value)}>
+          <option value={undefined} defaultValue={"All"}>
             All
           </option>
           {recipeTypes.map((x) => (
-            <option
-              key={x.id}
-              value={x.id}>
+            <option key={x.id} value={x.id}>
               {x.name}
             </option>
           ))}

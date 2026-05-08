@@ -1,25 +1,17 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import * as RecipeTypeService from "@/services/recipeTypeService";
 import type { RecipeType } from "@/types/RecipeType";
 import { useAuth } from "@clerk/clerk-react";
 
-export function useRecipeTypes(dependencies: unknown[]) {
-  const [recipeTypes, setRecipeTypes] = useState<RecipeType[]>([]);
+export function useRecipeTypes() {
   const { getToken } = useAuth();
 
-  const fetchRecipeTypes = async () => {
-    const sessionToken = (await getToken()) ?? null;
-    if (sessionToken) {
-      const types = await RecipeTypeService.fetchRecipeTypes(sessionToken);
-      setRecipeTypes([...types]);
-    }
-  };
-
-  useEffect(() => {
-    fetchRecipeTypes();
-  }, [...dependencies]);
-
-  return {
-    recipeTypes,
-  };
+  return useQuery<RecipeType[]>({
+    queryKey: ["recipeTypes"],
+    queryFn: async () => {
+      return RecipeTypeService.fetchRecipeTypes();
+    },
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
 }
