@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as RecipeService from "@/services/recipeService";
 import * as ValidateRecipeService from "@/services/validateRecipeService";
+import { uploadImage } from "@/services/uploadService";
 import { toast } from "react-toastify";
 import { useAuth } from "@clerk/clerk-react";
 import type { CreateUpdateRecipe } from "@/types/CreateUpdateRecipe";
@@ -17,7 +18,7 @@ const DEFAULT_RECIPE = {
   steps: [],
   id: undefined,
   imageUrl: undefined,
-  cloudinaryId: undefined,
+  imageKey: undefined,
 } as CreateUpdateRecipe;
 
 export function useRecipeForm() {
@@ -26,7 +27,7 @@ export function useRecipeForm() {
   const [errors, setErrors] = useState<Map<string, string>>(new Map());
   const [steps, setSteps] = useState<string[]>([]);
   const [ingredients, setIngredients] = useState<string[]>([]);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<Blob | null>(null); // resized, not yet uploaded
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formLoading, setFormLoading] = useState<boolean>(false);
 
@@ -70,6 +71,8 @@ export function useRecipeForm() {
       setImageFile(null);
       setImagePreview(null);
       clearFieldError("image");
+      // also drop the saved image (edit mode)
+      setRecipeData((prev) => ({ ...prev, imageUrl: undefined, imageKey: undefined }));
       return;
     }
 
@@ -83,11 +86,15 @@ export function useRecipeForm() {
       return;
     }
 
-    setImageFile(file);
     clearFieldError("image");
 
-    const resizedBase64 = await resizeImage(file);
-    setImagePreview(resizedBase64);
+    try {
+      const resized = await resizeImage(file);
+      setImageFile(resized);
+      setImagePreview(URL.createObjectURL(resized));
+    } catch {
+      setErrors((prev) => new Map(prev).set("image", "Could not read that image"));
+    }
   };
 
   const onReset = () => {
@@ -114,20 +121,27 @@ export function useRecipeForm() {
         steps,
       };
       setFormLoading(true);
-      if (formMode == "create") {
-        const newRecipe = await RecipeService.createNewRecipe(recipe, sessionToken, imagePreview);
-        recipe.id = newRecipe.id;
-        recipe.imageUrl = newRecipe.imageUrl;
-        recipe.cloudinaryId = newRecipe.cloudinaryId;
-      } else {
-        if (!imagePreview) {
-          recipe.imageUrl = undefined;
+      try {
+        // Upload only on submit, so abandoned forms don't leave files behind
+        if (imageFile) {
+          Object.assign(recipe, await uploadImage(imageFile, sessionToken));
         }
-        const updatedRecipe = await RecipeService.updateRecipe(recipe, sessionToken, imagePreview);
-        recipe.imageUrl = updatedRecipe.imageUrl;
-        recipe.cloudinaryId = updatedRecipe.cloudinaryId;
+        // null (not undefined) so "image removed" survives JSON.stringify
+        recipe.imageKey ??= null;
+        recipe.imageUrl ??= null;
+
+        if (formMode == "create") {
+          const newRecipe = await RecipeService.createNewRecipe(recipe, sessionToken);
+          recipe.id = newRecipe.id;
+        } else {
+          await RecipeService.updateRecipe(recipe, sessionToken);
+        }
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : "Failed to save recipe");
+        return null;
+      } finally {
+        setFormLoading(false);
       }
-      setFormLoading(false);
       const toastMessage = `Successfully ${formMode == "create" ? "created new" : "updated"}  recipe ${recipe.name}!`;
       toast(toastMessage, {
         position: "bottom-center",
@@ -142,8 +156,8 @@ export function useRecipeForm() {
     return null;
   };
 
-  const resizeImage = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
+  const resizeImage = (file: File): Promise<Blob> => {
+    return new Promise<Blob>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
@@ -170,9 +184,13 @@ export function useRecipeForm() {
 
           canvas.width = width;
           canvas.height = height;
-          ctx?.drawImage(img, 0, 0, width, height);
+          if (ctx) {
+            ctx.fillStyle = "white"; // JPEG has no transparency
+            ctx.fillRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+          }
 
-          resolve(canvas.toDataURL("image/jpeg", 0.85));
+          canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("Resize failed"))), "image/jpeg", 0.85);
         };
         img.onerror = reject;
         img.src = e.target?.result as string;
