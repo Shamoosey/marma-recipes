@@ -22,7 +22,7 @@ export interface Recipe {
   likeCount: number;
 
   imageUrl?: string;
-  cloudinaryId?: string;
+  imageKey?: string;
 
   comments: RecipeComment[];
 }
