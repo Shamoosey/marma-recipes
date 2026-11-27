@@ -176,7 +176,7 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                 )}
               </div>
             </div>
-            <div>
+            {/* <div>
               <span className="mx-2">Send Notification to Discord:</span>
               <Input
                 type="checkbox"
@@ -184,7 +184,7 @@ export function RecipeForm({ formMode, recipeId }: RecipeFormProps) {
                 onChange={(e) => handleFormChange("sendNotification", e.target.checked)}
                 className="p-2"
               />
-            </div>
+            </div> */}
           </div>
           <IngredientsForm
             ingredients={ingredients}
