@@ -13,5 +13,4 @@ export interface CreateUpdateRecipe {
   ovenTemp?: number;
   imageUrl?: string;
   cloudinaryId?: string;
-  sendNotification?: boolean;
 }
